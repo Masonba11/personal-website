@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= resume.name %> - <%= resume.title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+    <script>
+      function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      }
+
+      // Initialize theme
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-theme');
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-black min-h-screen">
+    <header class="bg-black border-b border-gray-800">
+      <nav class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+          <a href="/" class="text-2xl font-bold chrome-text">Mason Ball</a>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-8">
+            <a href="/" class="text-gray-300 hover:text-white transition-colors">About</a>
+            <a href="/academics" class="text-gray-300 hover:text-white transition-colors">Academics</a>
+            <a href="/business" class="text-gray-300 hover:text-white transition-colors">Business</a>
+            <a href="/contact" class="text-gray-300 hover:text-white transition-colors">Contact</a>
+            
+            <!-- Theme Toggle -->
+            <button
+              onclick="toggleTheme()"
+              class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-600"
+              aria-label="Toggle theme"
+            >
+              <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Mobile menu button -->
+          <button
+            id="mobile-menu-button"
+            class="md:hidden p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-600"
+          >
+            <svg
+              class="w-6 h-6 text-gray-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div
+          id="mobile-menu"
+          class="md:hidden hidden mt-4 space-y-4 pb-4"
+        >
+          <a href="/" class="block text-gray-300 hover:text-white transition-colors">About</a>
+          <a href="/academics" class="block text-gray-300 hover:text-white transition-colors">Academics</a>
+          <a href="/business" class="block text-gray-300 hover:text-white transition-colors">Business</a>
+          <a href="/contact" class="block text-gray-300 hover:text-white transition-colors">Contact</a>
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto px-6 py-8 pt-24">
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+  </body>
+</html>

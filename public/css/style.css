@@ -1,0 +1,301 @@
+/* Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Custom Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Hover Effects */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Custom Gradients */
+.gradient-text {
+  background: linear-gradient(45deg, #e5e7eb, #9ca3af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Custom Selection */
+::selection {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* Custom Focus Styles */
+.focus-ring {
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(229, 231, 235, 0.5);
+}
+
+/* Custom Button Styles */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(229, 231, 235, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* Custom Card Styles */
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(229, 231, 235, 0.1),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.card:hover::before {
+  transform: translateX(100%);
+}
+
+/* Chrome Effect */
+.chrome-bg {
+  background: linear-gradient(145deg, #e5e7eb, #9ca3af);
+}
+
+.chrome-text {
+  color: #e5e7eb;
+}
+
+.chrome-border {
+  border-color: #e5e7eb;
+}
+
+/* Chrome Button */
+.chrome-button {
+  background: linear-gradient(145deg, #e5e7eb, #9ca3af);
+  color: #111827;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.chrome-button:hover {
+  background: linear-gradient(145deg, #9ca3af, #e5e7eb);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 231, 235, 0.2);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+  color: #1a1a1a;
+  padding: 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Base styles */
+body {
+  background-color: #000;
+  color: #e2e8f0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme */
+body.light-theme {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Chrome text effect */
+.chrome-text {
+  background: linear-gradient(to right, #e2e8f0, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Navigation styles */
+.text-gray-300 {
+  color: #e2e8f0;
+}
+
+body.light-theme .text-gray-300 {
+  color: #1a1a1a;
+}
+
+/* Button styles */
+.bg-gray-800 {
+  background-color: #1f2937;
+}
+
+body.light-theme .bg-gray-800 {
+  background-color: #e5e7eb;
+}
+
+/* Border styles */
+.border-gray-800 {
+  border-color: #1f2937;
+}
+
+body.light-theme .border-gray-800 {
+  border-color: #e5e7eb;
+}
+
+/* Hover effects */
+.hover\:bg-gray-700:hover {
+  background-color: #374151;
+}
+
+body.light-theme .hover\:bg-gray-700:hover {
+  background-color: #d1d5db;
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a202c;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+}
+
+/* Selection styling */
+::selection {
+  background: #4a5568;
+  color: #e2e8f0;
+}
+
+body.light-theme ::selection {
+  background: #9ca3af;
+  color: #1a1a1a;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Smooth scrolling for the gallery */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Gallery image hover effects */
+.gallery-image {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}

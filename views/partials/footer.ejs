@@ -1,0 +1,31 @@
+    </main>
+    <footer class="bg-black border-t border-gray-800">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="chrome-text text-sm font-bold tracking-wider uppercase mb-4">Connect</h3>
+                    <div class="space-y-2">
+                        <a href="mailto:<%= resume.email %>" class="text-gray-400 hover:text-gray-200 transition-colors block text-sm">Email</a>
+                        <a href="<%= resume.linkedin %>" target="_blank" class="text-gray-400 hover:text-gray-200 transition-colors block text-sm">LinkedIn</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="chrome-text text-sm font-bold tracking-wider uppercase mb-4">Navigation</h3>
+                    <div class="space-y-2">
+                        <a href="/about" class="text-gray-400 hover:text-gray-200 transition-colors block text-sm">About Me</a>
+                        <a href="/academics" class="text-gray-400 hover:text-gray-200 transition-colors block text-sm">Academics</a>
+                        <a href="/business" class="text-gray-400 hover:text-gray-200 transition-colors block text-sm">Business</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="chrome-text text-sm font-bold tracking-wider uppercase mb-4">Location</h3>
+                    <p class="text-gray-400 text-sm"><%= resume.location %></p>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800">
+                <p class="text-gray-400 text-sm text-center">&copy; <%= new Date().getFullYear() %> <%= resume.name %>. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
