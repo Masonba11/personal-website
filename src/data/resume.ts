@@ -1,13 +1,6 @@
-const express = require("express");
-const path = require("path");
-const app = express();
-const port = process.env.PORT || 3000;
+import { Resume } from "@/types/resume";
 
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-
-// Sample resume data
-const resume = {
+export const resumeData: Resume = {
   name: "Mason Ball",
   title: "Student & Entrepreneur",
   email: "masonjball@gmail.com",
@@ -43,45 +36,3 @@ const resume = {
     },
   ],
 };
-
-// Routes
-app.get("/", (req, res) => {
-  res.render("index", { resume });
-});
-
-app.get("/about", (req, res) => {
-  res.render("about", { resume });
-});
-
-app.get("/academics", (req, res) => {
-  res.render("academics", { resume });
-});
-
-app.get("/contact", (req, res) => {
-  res.render("contact", { resume });
-});
-
-app.get("/business", (req, res) => {
-  res.render("business", { resume });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render("error", {
-    message: "Something went wrong!",
-    error: process.env.NODE_ENV === "development" ? err : {},
-  });
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).render("error", {
-    message: "Page not found",
-    error: {},
-  });
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
