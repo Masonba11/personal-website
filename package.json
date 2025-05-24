@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "build": "tailwindcss -i ./public/css/tailwind.css -o ./public/styles.css",
+    "build": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/styles.css",
     "build-css": "tailwindcss -i ./public/css/tailwind.css -o ./public/styles.css --watch",
     "start": "node app.js",
     "vercel-build": "npm run build"
