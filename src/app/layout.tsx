@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Mason Ball - Student & Entrepreneur",
   description:
     "Personal website of Mason Ball, a student and entrepreneur based in Mesa, Arizona.",
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -16,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.className} antialiased`}>
         <main className="min-h-screen bg-gray-50">{children}</main>
       </body>
     </html>
