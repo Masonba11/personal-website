@@ -56,9 +56,14 @@ export default function BusinessPage() {
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
                 Beyond paid advertising, I manage our SMS and email marketing
                 initiatives, implement basic SEO strategies, and coordinate
-                influencer partnerships to drive revenue. This comprehensive
-                approach has helped us generate thousands in revenue across our
-                first two product drops. Visit us at{" "}
+                influencer partnerships to drive revenue. I also handle all
+                communication with our production vendor, ensuring quality
+                control and timely delivery of our products. Additionally, I
+                plan and execute strategic photoshoots to showcase our
+                collections, working closely with photographers and models to
+                create compelling visual content. This comprehensive approach
+                has helped us generate thousands in revenue across our first two
+                product drops. Visit us at{" "}
                 <a
                   href="https://decption.com"
                   target="_blank"
