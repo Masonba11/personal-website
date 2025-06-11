@@ -13,21 +13,13 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur-sm border-b border-white/20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo/Home Link */}
-          <Link
-            href="/about"
-            className="relative z-[101] text-2xl md:text-3xl font-bold tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.5)] transition-all duration-300"
-          >
-            MB
-          </Link>
-
-          {/* Mobile Menu Button */}
+          {/* Hamburger Menu Button - Mobile Only */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="relative z-[101] md:hidden text-white p-2"
+            className="md:hidden text-white p-2"
             aria-label="Toggle menu"
           >
             <svg
@@ -36,25 +28,27 @@ export default function Header() {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
 
-          {/* Navigation Links - Desktop */}
+          {/* Logo/Home Link - Centered on Mobile */}
+          <Link
+            href="/about"
+            className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none text-2xl md:text-3xl font-bold tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.5)] transition-all duration-300"
+          >
+            MB
+          </Link>
+
+          {/* Empty div for spacing on mobile */}
+          <div className="w-10 md:hidden"></div>
+
+          {/* Navigation Links - Desktop Only */}
           <nav className="hidden md:flex items-center space-x-8">
             {[
               { path: "/about", label: "About Me" },
@@ -65,7 +59,7 @@ export default function Header() {
               <Link
                 key={path}
                 href={path}
-                className={`relative z-[101] text-sm font-medium tracking-wide transition-all duration-300 ${
+                className={`text-sm font-medium tracking-wide transition-all duration-300 ${
                   isActive(path)
                     ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
                     : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
@@ -78,7 +72,7 @@ export default function Header() {
 
           {/* Mobile Navigation Menu */}
           <div
-            className={`md:hidden fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-sm border-b border-white/20 transform transition-transform duration-300 ease-in-out z-[99] ${
+            className={`md:hidden fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-sm border-b border-white/20 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-y-0" : "-translate-y-full"
             }`}
           >
