@@ -88,10 +88,10 @@ export default function Header() {
                   key={path}
                   href={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-base font-medium tracking-wide transition-all duration-300 ${
+                  className={`w-full text-center py-3 text-base font-medium tracking-wide transition-all duration-300 ${
                     isActive(path)
-                      ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
-                      : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                      ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] bg-white/10"
+                      : "text-white/60 hover:text-white hover:bg-white/10 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
                   }`}
                 >
                   {label}
