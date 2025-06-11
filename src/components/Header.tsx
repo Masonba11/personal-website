@@ -13,6 +13,18 @@ export default function Header() {
     setIsMenuOpen(false);
   }, [pathname]);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
   const isActive = (path: string) => {
     return pathname === path;
   };
@@ -33,6 +45,7 @@ export default function Header() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             <svg
               className="w-6 h-6"
@@ -76,10 +89,10 @@ export default function Header() {
 
           {/* Mobile Navigation Menu */}
           <div
-            className={`md:hidden fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-white/20 transform transition-all duration-300 ease-in-out ${
+            className={`md:hidden fixed inset-0 top-16 bg-black/95 backdrop-blur-md transform transition-all duration-300 ease-in-out ${
               isMenuOpen
                 ? "translate-y-0 opacity-100"
-                : "-translate-y-full opacity-0"
+                : "-translate-y-full opacity-0 pointer-events-none"
             }`}
           >
             <nav className="flex flex-col items-center py-4 space-y-4">
@@ -88,7 +101,7 @@ export default function Header() {
                   key={path}
                   href={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`w-full text-center py-3 text-base font-medium tracking-wide transition-all duration-300 ${
+                  className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-all duration-300 ${
                     isActive(path)
                       ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] bg-white/10"
                       : "text-white/60 hover:text-white hover:bg-white/10 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
