@@ -5,28 +5,20 @@ import ImageSlideshow from "@/components/ImageSlideshow";
 export default function BusinessPage() {
   const images = [
     {
-      src: "/images/IMG_8252.JPG",
+      src: "/images/IMG_0001.JPG",
       alt: "Decption product showcase 1",
     },
     {
-      src: "/images/IMG_8264 2.JPG",
+      src: "/images/IMG_0002.JPG",
       alt: "Decption product showcase 2",
     },
     {
-      src: "/images/IMG_8265 2.JPG",
+      src: "/images/IMG_0202.JPG",
       alt: "Decption product showcase 3",
     },
     {
-      src: "/images/IMG_0001.JPG",
+      src: "/images/IMG_8252.JPG",
       alt: "Decption product showcase 4",
-    },
-    {
-      src: "/images/IMG_0002.JPG",
-      alt: "Decption product showcase 5",
-    },
-    {
-      src: "/images/IMG_0202.JPG",
-      alt: "Decption product showcase 6",
     },
   ];
 
