@@ -25,6 +25,11 @@ export default function BusinessPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="container mx-auto px-4 py-12">
+        {/* Website credit */}
+        <div className="text-center text-white/60 text-sm mb-4">
+          Website built by Mason Ball
+        </div>
+
         {/* Glowing header */}
         <div className="flex flex-col items-center gap-6 mb-12 text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
@@ -55,7 +60,16 @@ export default function BusinessPage() {
                 initiatives, implement basic SEO strategies, and coordinate
                 influencer partnerships to drive revenue. This comprehensive
                 approach has helped us generate over $5,000 in revenue across
-                our first two product drops.
+                our first two product drops. Visit us at{" "}
+                <a
+                  href="https://decption.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white/80 underline transition-colors"
+                >
+                  decption.com
+                </a>{" "}
+                to explore our collection.
               </p>
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
                 On the technical side, I develop custom features for our
