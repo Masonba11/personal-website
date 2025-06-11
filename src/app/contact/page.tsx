@@ -40,6 +40,14 @@ export default function ContactPage() {
                   <p className="text-white/90">
                     Location: Queen Creek, Arizona
                   </p>
+                  <a
+                    href="https://github.com/Masonba11/personal-website"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-white/90 hover:text-white transition-colors duration-300"
+                  >
+                    View Website Source Code →
+                  </a>
                 </div>
               </div>
 
