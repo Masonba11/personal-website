@@ -89,7 +89,7 @@ export default function Header() {
 
           {/* Mobile Navigation Menu */}
           <div
-            className={`md:hidden fixed inset-0 top-16 bg-black/95 backdrop-blur-md transform transition-all duration-300 ease-in-out ${
+            className={`md:hidden fixed inset-0 top-16 bg-gray-100 transform transition-all duration-300 ease-in-out ${
               isMenuOpen
                 ? "translate-y-0 opacity-100"
                 : "-translate-y-full opacity-0 pointer-events-none"
@@ -103,8 +103,8 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-all duration-300 ${
                     isActive(path)
-                      ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] bg-white/10"
-                      : "text-white/60 hover:text-white hover:bg-white/10 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                      ? "text-black bg-gray-200"
+                      : "text-gray-700 hover:text-black hover:bg-gray-200"
                   }`}
                 >
                   {label}
