@@ -28,28 +28,37 @@ export default function BusinessPage() {
       <div className="container mx-auto px-4 py-12">
         <WebsiteCredit />
 
-        <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
-          BUSINESS
-        </h1>
+        {/* Glowing header */}
+        <div className="flex flex-col items-center gap-6 mb-12 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
+            BUSINESS
+          </h1>
+        </div>
 
         <div className="max-w-4xl mx-auto">
+          {/* Glowing card */}
           <div className="bg-black/50 p-8 md:p-12 rounded-2xl border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] transform hover:scale-[1.02] transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]">
             <div className="space-y-6">
-              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-                As a co-founder of Decption, I've been instrumental in building
-                a streetwear brand that combines creative design with
-                data-driven marketing strategies. Through strategic Facebook Ads
-                campaigns and influencer marketing, we've generated thousands in
-                revenue while maintaining strong profit margins.
+              <p className="text-xl md:text-2xl font-bold tracking-wide text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                Decption - Streetwear Brand
               </p>
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
-                My role encompasses managing growth strategies, overseeing
-                advertising campaigns, and driving technical developments. I've
-                built custom analytics dashboards to track key metrics and
-                optimize performance, ensuring we scale profitably.
+                As a co-founder of Decption, I lead our brand's growth strategy
+                and work closely with our marketing agency to manage
+                sophisticated paid advertising campaigns. Our data-driven
+                approach focuses on key metrics like CTR (click-through rate),
+                CPC (cost per click), and analytics to make strategic decisions.
+                For example, after analyzing high add-to-cart activity through
+                our analytics, we identified an opportunity to improve our
+                offer. This insight led to a significant enhancement in our
+                retargeting campaign's effectiveness.
               </p>
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
-                Visit{" "}
+                Beyond paid advertising, I manage our SMS and email marketing
+                initiatives, implement basic SEO strategies, and coordinate
+                influencer partnerships to drive revenue. This comprehensive
+                approach has helped us generate thousands in revenue across our
+                first two product drops. Visit us at{" "}
                 <a
                   href="https://decption.com"
                   target="_blank"
@@ -60,9 +69,22 @@ export default function BusinessPage() {
                 </a>{" "}
                 to explore our collection.
               </p>
+              <p className="text-white/90 text-base md:text-lg leading-relaxed">
+                On the technical side, I develop custom features for our
+                storefront based on user behavior data. When Shopify's standard
+                account system didn't meet our needs, I built a custom signup
+                page from scratch, demonstrating my backend development
+                expertise. I also implemented an engaging glow effect using
+                Tailwind CSS, showcasing my frontend skills. This combination of
+                backend functionality and frontend design improvements led to a
+                150% increase in signups. Every feature and campaign we build is
+                backed by data, ensuring we scale profitably while maintaining
+                performance.
+              </p>
             </div>
           </div>
 
+          {/* Image Slideshow */}
           <div className="mt-12">
             <ImageSlideshow images={images} />
           </div>

@@ -18,11 +18,11 @@ export default function EducationPage() {
             <div className="space-y-6">
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
                 I'm currently pursuing my Bachelor's degree in Data Analytics &
-                Computer Programming at Mesa Community College. With a current
-                GPA of 3.8, I'm taking on a heavier course load than the average
-                student, which allows me to complete my degree in 2 years and
-                5-10 months, significantly faster than the traditional 4-year
-                timeline.
+                Computer Programming at Mesa Community College on a full
+                academic scholarship. With a current GPA of 3.8, I'm taking on a
+                heavier course load than the average student, which allows me to
+                complete my degree in 2 years and 5-10 months, significantly
+                faster than the traditional 4-year timeline.
               </p>
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
                 My coursework focuses on programming languages, data analysis,
