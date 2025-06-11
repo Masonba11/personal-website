@@ -17,7 +17,7 @@ export default function BusinessPage() {
       alt: "Decption product showcase 3",
     },
     {
-      src: "/images/IMG_8252.JPG",
+      src: "/images/IMG_8252 2.jpg",
       alt: "Decption product showcase 4",
     },
   ];
