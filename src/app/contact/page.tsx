@@ -1,9 +1,13 @@
 "use client";
 
+import WebsiteCredit from "@/components/WebsiteCredit";
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="container mx-auto px-4 py-12">
+        <WebsiteCredit />
+
         {/* Glowing header */}
         <div className="flex flex-col items-center gap-6 mb-12 text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
