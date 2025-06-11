@@ -101,10 +101,10 @@ export default function Header() {
                   key={path}
                   href={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-all duration-300 ${
+                  className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-all duration-300 bg-gray-200 ${
                     isActive(path)
-                      ? "text-black bg-gray-200"
-                      : "text-gray-700 hover:text-black hover:bg-gray-200"
+                      ? "text-black"
+                      : "text-gray-700 hover:text-black"
                   }`}
                 >
                   {label}
