@@ -12,18 +12,25 @@ export default function Header() {
     return pathname === path;
   };
 
+  const navLinks = [
+    { path: "/about", label: "About Me" },
+    { path: "/education", label: "Education" },
+    { path: "/business", label: "Business" },
+    { path: "/contact", label: "Contact" },
+  ];
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/20">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Hamburger Menu Button - Mobile Only */}
+        <div className="relative flex items-center justify-between h-16">
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
             aria-label="Toggle menu"
           >
             <svg
-              className="w-8 h-8"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -37,29 +44,21 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo/Home Link - Centered on Mobile */}
+          {/* Logo - Centered on all screens */}
           <Link
             href="/about"
-            className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none text-3xl md:text-4xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] transition-all duration-300"
+            className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none text-2xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] transition-all duration-300"
           >
             MB
           </Link>
 
-          {/* Empty div for spacing on mobile */}
-          <div className="w-12 md:hidden"></div>
-
-          {/* Navigation Links - Desktop Only */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {[
-              { path: "/about", label: "About Me" },
-              { path: "/education", label: "Education" },
-              { path: "/business", label: "Business" },
-              { path: "/contact", label: "Contact" },
-            ].map(({ path, label }) => (
+            {navLinks.map(({ path, label }) => (
               <Link
                 key={path}
                 href={path}
-                className={`text-base font-medium tracking-wide transition-all duration-300 ${
+                className={`text-sm font-medium tracking-wide transition-all duration-300 ${
                   isActive(path)
                     ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
                     : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
@@ -72,22 +71,19 @@ export default function Header() {
 
           {/* Mobile Navigation Menu */}
           <div
-            className={`md:hidden fixed top-20 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-white/20 transform transition-transform duration-300 ease-in-out ${
-              isMenuOpen ? "translate-y-0" : "-translate-y-full"
+            className={`md:hidden fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-white/20 transform transition-all duration-300 ease-in-out ${
+              isMenuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-full opacity-0"
             }`}
           >
-            <nav className="flex flex-col items-center py-6 space-y-6">
-              {[
-                { path: "/about", label: "About Me" },
-                { path: "/education", label: "Education" },
-                { path: "/business", label: "Business" },
-                { path: "/contact", label: "Contact" },
-              ].map(({ path, label }) => (
+            <nav className="flex flex-col items-center py-4 space-y-4">
+              {navLinks.map(({ path, label }) => (
                 <Link
                   key={path}
                   href={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-lg font-medium tracking-wide transition-all duration-300 ${
+                  className={`text-base font-medium tracking-wide transition-all duration-300 ${
                     isActive(path)
                       ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
                       : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
