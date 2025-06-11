@@ -72,7 +72,7 @@ export default function BusinessPage() {
                 >
                   decption.com
                 </a>{" "}
-                to explore our collection.
+                .
               </p>
               <p className="text-white/90 text-base md:text-lg leading-relaxed">
                 On the technical side, I develop custom features for our
