@@ -27,10 +27,10 @@ export default function Navigation() {
               Education
             </Link>
             <Link
-              href="/business"
+              href="/business/digital-marketing"
               className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900"
             >
-              Business
+              Digital Marketing & Business
             </Link>
           </div>
         </div>

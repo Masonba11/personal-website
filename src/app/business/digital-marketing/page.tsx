@@ -30,8 +30,8 @@ export default function BusinessPage() {
 
         {/* Glowing header */}
         <div className="flex flex-col items-center gap-6 mb-12 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
-            BUSINESS
+          <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
+            DIGITAL MARKETING & BUSINESS
           </h1>
         </div>
 

@@ -32,7 +32,10 @@ export default function Header() {
   const navLinks = [
     { path: "/about", label: "About Me" },
     { path: "/education", label: "Education" },
-    { path: "/business", label: "Business" },
+    {
+      path: "/business/digital-marketing",
+      label: "Digital Marketing & Business",
+    },
     { path: "/contact", label: "Contact" },
   ];
 
@@ -43,7 +46,11 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+            className={`md:hidden p-2 text-white rounded-lg transition-all duration-200 border-2 ${
+              isMenuOpen
+                ? "bg-white/80 border-white shadow-lg scale-110 animate-pulse text-black"
+                : "bg-black/40 border-white/40 hover:bg-white/10"
+            }`}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
