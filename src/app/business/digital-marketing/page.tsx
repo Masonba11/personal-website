@@ -29,15 +29,15 @@ export default function BusinessPage() {
         <WebsiteCredit />
 
         {/* Glowing header */}
-        <div className="flex flex-col items-center gap-6 mb-12 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse">
+        <div className="flex flex-col items-center gap-6 mb-16 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-12 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] animate-pulse z-10 relative">
             DIGITAL MARKETING & BUSINESS
           </h1>
         </div>
 
         <div className="max-w-4xl mx-auto">
           {/* Glowing card */}
-          <div className="bg-black/50 p-8 md:p-12 rounded-2xl border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] transform hover:scale-[1.02] transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+          <div className="bg-black/50 p-8 md:p-12 rounded-2xl border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] transform hover:scale-[1.02] transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] mt-8">
             <div className="space-y-6">
               <p className="text-xl md:text-2xl font-bold tracking-wide text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                 Decption - Streetwear Brand
@@ -90,7 +90,7 @@ export default function BusinessPage() {
           </div>
 
           {/* Image Slideshow */}
-          <div className="mt-12">
+          <div className="mt-16">
             <ImageSlideshow images={images} />
           </div>
         </div>
