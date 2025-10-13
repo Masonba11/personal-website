@@ -28,16 +28,17 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-icon.png" }],
   },
   openGraph: {
-    title: "Mason Ball - Developer & Digital Marketer",
+    title: "Mason Ball | Digital Marketing in Queen Creek",
     description:
-      "Software engineer building web apps and helping service businesses grow through digital marketing.",
+      "Digital Marketing in Queen Creek. See how I helped The Yard Experts scale from under 10 to 70+ leads per month.",
+    url: "https://masonball.com",
     type: "website",
     images: [
       {
-        url: "/opengraph-image.png?v=5",
+        url: "/mb-og-image.png",
         width: 1200,
         height: 630,
-        alt: "Mason Ball - MB Logo",
+        alt: "Mason Ball - Digital Marketing in Queen Creek",
       },
     ],
   },
