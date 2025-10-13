@@ -22,11 +22,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Mason Ball" }],
   icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", type: "image/png" }],
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: "Mason Ball - Developer & Digital Marketer",
