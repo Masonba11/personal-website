@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
@@ -58,6 +59,11 @@ const professionalServiceSchema = {
 };
 
 export default function DigitalMarketingPage() {
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = pageMetadata.title;
+  }, []);
+
   const services = [
     {
       title: "Local SEO",
