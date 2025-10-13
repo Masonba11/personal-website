@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Mason Ball" }],
   icons: {
     icon: [
-      { url: "/favicon.ico?v=3", type: "image/x-icon" },
+      { url: "/favicon.ico?v=4", type: "image/x-icon" },
     ],
     apple: [{ url: "/apple-icon.png" }],
   },
