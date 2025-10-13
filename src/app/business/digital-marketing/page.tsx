@@ -5,7 +5,7 @@ import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 
 const pageMetadata = {
-  title: "Digital Marketing in Queen Creek | Local SEO & Google Ads",
+  title: "Queen Creek Digital Marketing Services | Local SEO Expert",
   description:
     "Results-driven digital marketing in Queen Creek. See how I helped The Yard Experts reach 70+ leads/month with Local SEO, Google Ads, and LSAs.",
   keywords: [
@@ -17,7 +17,7 @@ const pageMetadata = {
     "lead generation",
   ],
   openGraph: {
-    title: "Digital Marketing in Queen Creek | Local SEO & Google Ads",
+    title: "Queen Creek Digital Marketing Services | Local SEO Expert",
     description:
       "Case Study: The Yard Experts went from 5-9 to 70+ leads/month in 60 days with digital marketing in Queen Creek.",
     type: "website",
