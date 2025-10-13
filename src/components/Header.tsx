@@ -30,12 +30,10 @@ export default function Header() {
   };
 
   const navLinks = [
+    { path: "/", label: "Home" },
     { path: "/about", label: "About Me" },
     { path: "/education", label: "Education" },
-    {
-      path: "/business/digital-marketing",
-      label: "Digital Marketing & Business",
-    },
+    { path: "/business/digital-marketing", label: "Digital Marketing" },
     { path: "/contact", label: "Contact" },
   ];
 
@@ -74,30 +72,40 @@ export default function Header() {
             )}
           </button>
 
-          {/* Logo - Centered on all screens */}
+          {/* Logo - Centered on mobile, left on desktop */}
           <Link
-            href="/about"
+            href="/"
             className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none text-2xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] transition-all duration-300"
           >
             MB
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map(({ path, label }) => (
-              <Link
-                key={path}
-                href={path}
-                className={`text-sm font-medium tracking-wide transition-all duration-300 ${
-                  isActive(path)
-                    ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
-                    : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+          <div className="hidden md:flex items-center space-x-8">
+            <nav className="flex items-center space-x-8">
+              {navLinks.map(({ path, label }) => (
+                <Link
+                  key={path}
+                  href={path}
+                  className={`text-sm font-medium tracking-wide transition-all duration-300 ${
+                    isActive(path)
+                      ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
+                      : "text-white/60 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* CTA Button */}
+            <Link
+              href="/contact"
+              className="px-4 py-2 bg-white text-black font-bold text-sm rounded-lg shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transform hover:scale-105 transition-all duration-300"
+            >
+              Book a Strategy Call
+            </Link>
+          </div>
 
           {/* Mobile Navigation Menu Overlay */}
           {isMenuOpen && (
@@ -107,6 +115,7 @@ export default function Header() {
               aria-hidden="true"
             />
           )}
+
           {/* Mobile Navigation Menu */}
           <div
             className={`md:hidden fixed top-0 left-0 h-full w-3/4 max-w-xs z-50 bg-[#111] shadow-2xl transform transition-all duration-300 ease-in-out ${
@@ -130,6 +139,15 @@ export default function Header() {
                   {label}
                 </Link>
               ))}
+
+              {/* Mobile CTA Button */}
+              <Link
+                href="/contact"
+                onClick={() => setIsMenuOpen(false)}
+                className="w-full text-center py-4 px-4 bg-white text-black font-bold text-lg rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-200 mt-4"
+              >
+                Book a Strategy Call
+              </Link>
             </nav>
           </div>
         </div>

@@ -6,8 +6,27 @@ import Header from "@/components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mason Ball - Portfolio",
-  description: "Software Developer & Entrepreneur",
+  title: "Mason Ball - Software Developer & Digital Marketing Specialist",
+  description:
+    "Software engineer and digital marketer based in Queen Creek, AZ. Building modern web applications with React & Next.js, and helping service businesses scale with Local SEO and Google Ads.",
+  keywords: [
+    "software developer",
+    "web developer",
+    "react",
+    "nextjs",
+    "typescript",
+    "digital marketing",
+    "local seo",
+    "google ads",
+    "lead generation",
+  ],
+  authors: [{ name: "Mason Ball" }],
+  openGraph: {
+    title: "Mason Ball - Developer & Digital Marketer",
+    description:
+      "Software engineer building web apps and helping service businesses grow through digital marketing.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
