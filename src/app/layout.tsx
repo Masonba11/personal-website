@@ -32,6 +32,14 @@ export const metadata: Metadata = {
     description:
       "Software engineer building web apps and helping service businesses grow through digital marketing.",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Mason Ball - MB Logo",
+      },
+    ],
   },
 };
 
