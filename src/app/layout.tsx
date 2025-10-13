@@ -21,11 +21,26 @@ export const metadata: Metadata = {
     "lead generation",
   ],
   authors: [{ name: "Mason Ball" }],
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", type: "image/png" }],
+  },
   openGraph: {
     title: "Mason Ball - Developer & Digital Marketer",
     description:
       "Software engineer building web apps and helping service businesses grow through digital marketing.",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "MB - Mason Ball",
+      },
+    ],
   },
 };
 
