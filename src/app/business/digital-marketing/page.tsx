@@ -17,12 +17,6 @@ const pageMetadata = {
     "service business marketing",
     "lead generation",
   ],
-  openGraph: {
-    title: "Queen Creek Digital Marketing Services | Local SEO Expert",
-    description:
-      "Case Study: The Yard Experts went from 5-9 to 70+ leads/month in 60 days with digital marketing in Queen Creek.",
-    type: "website",
-  },
 };
 
 const professionalServiceSchema = {

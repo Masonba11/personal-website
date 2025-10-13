@@ -8,12 +8,6 @@ const pageMetadata = {
   title: "Mason Ball - Software Developer & Digital Marketing Specialist",
   description:
     "Software engineer and digital marketer based in Queen Creek, AZ. Specializing in React, Next.js, and performance-driven digital marketing for service businesses.",
-  openGraph: {
-    title: "Mason Ball - Developer & Digital Marketer",
-    description:
-      "Full-stack developer and digital marketing specialist with proven results.",
-    type: "website",
-  },
 };
 
 const organizationSchema = {

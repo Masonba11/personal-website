@@ -6,11 +6,6 @@ const pageMetadata = {
   title: "Contact Mason Ball | Web Development & Digital Marketing Services",
   description:
     "Get in touch to discuss web development projects, digital marketing services, or collaboration opportunities.",
-  openGraph: {
-    title: "Contact Mason Ball",
-    description: "Let's work together on your next project.",
-    type: "website",
-  },
 };
 
 export default function ContactPage() {

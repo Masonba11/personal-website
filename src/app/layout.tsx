@@ -30,17 +30,23 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mason Ball | Digital Marketing in Queen Creek",
     description:
-      "Digital Marketing in Queen Creek. See how I helped The Yard Experts scale from under 10 to 70+ leads per month.",
-    url: "https://masonball.com",
+      "Local SEO & Google Ads expert helping service businesses hit 70+ leads/mo.",
+    url: "https://masonball.com/",
     type: "website",
     images: [
       {
-        url: "/mb-og-image.png",
+        url: "https://masonball.com/mb-og-v4.png",
         width: 1200,
         height: 630,
         alt: "Mason Ball - Digital Marketing in Queen Creek",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mason Ball | Digital Marketing in Queen Creek",
+    description: "Results-driven digital marketing in Queen Creek.",
+    images: ["https://masonball.com/mb-og-v4.png"],
   },
 };
 

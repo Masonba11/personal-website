@@ -6,12 +6,6 @@ const pageMetadata = {
   title: "About Mason Ball | Software Developer & Digital Marketing Specialist",
   description:
     "Software engineer and digital marketer based in Queen Creek, AZ. Student at Mesa Community College studying Data Analytics & Computer Programming.",
-  openGraph: {
-    title: "About Mason Ball - Developer & Digital Marketer",
-    description:
-      "Full-stack developer and performance-driven digital marketer helping businesses grow.",
-    type: "profile",
-  },
 };
 
 export default function AboutPage() {
