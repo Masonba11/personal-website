@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "/opengraph-image.png?v=5",
         width: 1200,
         height: 630,
         alt: "Mason Ball - MB Logo",
