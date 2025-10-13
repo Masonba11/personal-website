@@ -23,21 +23,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Mason Ball" }],
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.png",
   },
   openGraph: {
     title: "Mason Ball - Developer & Digital Marketer",
     description:
       "Software engineer building web apps and helping service businesses grow through digital marketing.",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "MB - Mason Ball",
-      },
-    ],
   },
 };
 
