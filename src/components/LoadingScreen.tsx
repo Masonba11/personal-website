@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [scene, setScene] = useState<"sky" | "house" | "room" | "computer" | "screen">("sky");
 
   useEffect(() => {
     // Check if user has already seen the loading screen this session
@@ -16,20 +15,7 @@ export default function LoadingScreen() {
       return;
     }
 
-    // Scene transitions
-    const sceneTimeline = [
-      { time: 0, scene: "sky" as const },
-      { time: 1000, scene: "house" as const },
-      { time: 2000, scene: "room" as const },
-      { time: 3000, scene: "computer" as const },
-      { time: 4000, scene: "screen" as const },
-    ];
-
-    sceneTimeline.forEach(({ time, scene: newScene }) => {
-      setTimeout(() => setScene(newScene), time);
-    });
-
-    // Simulate loading progress
+    // Simulate loading progress - 2-3 seconds
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -37,12 +23,12 @@ export default function LoadingScreen() {
           setTimeout(() => {
             setIsLoading(false);
             sessionStorage.setItem("hasSeenLoader", "true");
-          }, 800);
+          }, 300);
           return 100;
         }
-        return prev + 1.5;
+        return prev + 4; // Faster increment for shorter duration
       });
-    }, 70);
+    }, 30);
 
     return () => clearInterval(interval);
   }, []);
@@ -51,57 +37,19 @@ export default function LoadingScreen() {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden">
-      {/* Sky Scene - Drone View */}
-      <div className={`scene-container ${scene === "sky" ? "active" : ""}`}>
-        <div className="sky-gradient" />
-        <div className="clouds">
-          <div className="cloud cloud-1" />
-          <div className="cloud cloud-2" />
-          <div className="cloud cloud-3" />
-        </div>
-        <div className="horizon" />
-      </div>
-
-      {/* House Scene - Approaching */}
-      <div className={`scene-container ${scene === "house" ? "active" : ""}`}>
-        <div className="house-exterior">
-          <div className="house-wall" />
-          <div className="window window-target">
-            <div className="window-glow" />
-          </div>
-        </div>
-      </div>
-
-      {/* Room Scene - Inside */}
-      <div className={`scene-container ${scene === "room" ? "active" : ""}`}>
-        <div className="room-interior">
-          <div className="wall-texture" />
-          <div className="desk-silhouette" />
-          <div className="monitor-outline">
-            <div className="screen-glow" />
-          </div>
-        </div>
-      </div>
-
-      {/* Computer Scene - Close to Screen */}
-      <div className={`scene-container ${scene === "computer" ? "active" : ""}`}>
-        <div className="monitor-bezel">
-          <div className="screen-frame">
-            <div className="screen-scanlines" />
-          </div>
-        </div>
-      </div>
-
-      {/* Screen Scene - MB Sphere */}
-      <div className={`scene-container ${scene === "screen" ? "active" : ""}`}>
-        <div className="screen-content">
-          <div className="digital-grid" />
-          <div className="data-streams">
-            <div className="stream stream-1" />
-            <div className="stream stream-2" />
-            <div className="stream stream-3" />
-          </div>
-        </div>
+      {/* Animated grid background */}
+      <div className="absolute inset-0 opacity-20">
+        <div
+          className="w-full h-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: "50px 50px",
+            animation: "gridMove 2s linear infinite",
+          }}
+        />
       </div>
 
       {/* Glitch lines */}
@@ -113,10 +61,8 @@ export default function LoadingScreen() {
 
       {/* Main content */}
       <div className="relative z-10 text-center">
-        {/* Chrome Sphere with MB Logo - Only shows in final scene */}
-        <div className={`mb-12 relative flex items-center justify-center transition-all duration-1000 ${
-          scene === "screen" ? "opacity-100 scale-100" : "opacity-0 scale-50"
-        }`}>
+        {/* Chrome Sphere with MB Logo */}
+        <div className="mb-12 relative flex items-center justify-center">
           <div className="chrome-sphere">
             <div className="sphere-inner">
               <h1 className="text-[80px] font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-400 tracking-wider relative z-10">
@@ -130,41 +76,29 @@ export default function LoadingScreen() {
           </div>
         </div>
 
-        {/* Terminal-style loading text - Only shows in final scene */}
-        <div className={`text-cyan-400 font-mono text-sm mb-6 h-6 transition-opacity duration-500 ${
-          scene === "screen" ? "opacity-100" : "opacity-0"
-        }`}>
-          {progress < 25 && (
-            <span className="typing-text">$ Initializing system...</span>
+        {/* Terminal-style loading text */}
+        <div className="text-cyan-400 font-mono text-sm mb-6 h-6">
+          {progress < 30 && (
+            <span className="typing-text">$ Initializing...</span>
           )}
-          {progress >= 25 && progress < 50 && (
-            <span className="typing-text">$ Loading modules... ✓</span>
+          {progress >= 30 && progress < 70 && (
+            <span className="typing-text">$ Loading... ✓</span>
           )}
-          {progress >= 50 && progress < 75 && (
-            <span className="typing-text">$ Compiling assets... ✓</span>
-          )}
-          {progress >= 75 && progress < 95 && (
-            <span className="typing-text">$ Establishing connection... ✓</span>
-          )}
-          {progress >= 95 && (
+          {progress >= 70 && (
             <span className="typing-text text-green-400">$ Welcome ✓</span>
           )}
         </div>
 
-        {        /* Progress bar - Only shows in final scene */}
-        <div className={`w-64 mx-auto h-1 bg-gray-800 rounded-full overflow-hidden shadow-lg transition-opacity duration-500 ${
-          scene === "screen" ? "opacity-100" : "opacity-0"
-        }`}>
+        {/* Progress bar */}
+        <div className="w-64 mx-auto h-1 bg-gray-800 rounded-full overflow-hidden shadow-lg">
           <div
             className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(34,211,238,0.6)]"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        {/* Percentage - Only shows in final scene */}
-        <div className={`mt-4 text-white font-mono text-xs transition-opacity duration-500 ${
-          scene === "screen" ? "opacity-100" : "opacity-0"
-        }`}>
+        {/* Percentage */}
+        <div className="mt-4 text-white font-mono text-xs">
           <span className="text-cyan-400">[</span>
           {progress}%
           <span className="text-cyan-400">]</span>
@@ -172,350 +106,12 @@ export default function LoadingScreen() {
       </div>
 
       <style jsx>{`
-        /* Scene Container */
-        .scene-container {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transition: opacity 1s ease-in-out;
-          pointer-events: none;
-        }
-
-        .scene-container.active {
-          opacity: 1;
-        }
-
-        /* Sky Scene */
-        .sky-gradient {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(180deg, #001f3f 0%, #005f8f 50%, #87ceeb 100%);
-          animation: skyMove 3s ease-in-out forwards;
-        }
-
-        @keyframes skyMove {
-          from {
-            transform: translateY(0) scale(1);
-          }
-          to {
-            transform: translateY(30%) scale(1.3);
-          }
-        }
-
-        .clouds {
-          position: absolute;
-          inset: 0;
-        }
-
-        .cloud {
-          position: absolute;
-          background: rgba(255, 255, 255, 0.6);
-          border-radius: 100px;
-          filter: blur(20px);
-          animation: cloudDrift 8s linear infinite;
-        }
-
-        .cloud-1 {
-          width: 200px;
-          height: 60px;
-          top: 20%;
-          left: -200px;
-        }
-
-        .cloud-2 {
-          width: 300px;
-          height: 80px;
-          top: 40%;
-          left: -300px;
-          animation-delay: 2s;
-        }
-
-        .cloud-3 {
-          width: 250px;
-          height: 70px;
-          top: 60%;
-          left: -250px;
-          animation-delay: 4s;
-        }
-
-        @keyframes cloudDrift {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(calc(100vw + 300px));
-          }
-        }
-
-        .horizon {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          height: 30%;
-          background: linear-gradient(180deg, transparent 0%, #2a5f3f 100%);
-          animation: horizonApproach 2s ease-out forwards;
-        }
-
-        @keyframes horizonApproach {
-          from {
-            transform: translateY(100%) scale(0.5);
-          }
-          to {
-            transform: translateY(0) scale(1.5);
-          }
-        }
-
-        /* House Scene */
-        .house-exterior {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: houseZoom 1.5s ease-in-out forwards;
-        }
-
-        @keyframes houseZoom {
-          from {
-            transform: scale(0.3) translateY(100%);
-          }
-          to {
-            transform: scale(2) translateY(0);
-          }
-        }
-
-        .house-wall {
-          position: absolute;
-          width: 400px;
-          height: 300px;
-          background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
-          border-radius: 8px;
-        }
-
-        .window {
-          position: absolute;
-          width: 180px;
-          height: 220px;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background: linear-gradient(180deg, #1a4d6f 0%, #0a2540 100%);
-          border: 6px solid #3a3a3a;
-          border-radius: 8px;
-          overflow: hidden;
-        }
-
-        .window-glow {
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle, rgba(0, 255, 255, 0.4) 0%, transparent 70%);
-          animation: windowPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes windowPulse {
-          0%, 100% {
-            opacity: 0.5;
-          }
-          50% {
-            opacity: 1;
-          }
-        }
-
-        /* Room Scene */
-        .room-interior {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: roomEntry 1.5s ease-out forwards;
-        }
-
-        @keyframes roomEntry {
-          from {
-            transform: translateZ(-1000px) scale(0.5);
-            filter: blur(10px);
-          }
-          to {
-            transform: translateZ(0) scale(1);
-            filter: blur(0);
-          }
-        }
-
-        .wall-texture {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-        }
-
-        .desk-silhouette {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          height: 35%;
-          background: linear-gradient(180deg, transparent 0%, #0a0a0a 100%);
-        }
-
-        .monitor-outline {
-          position: relative;
-          width: 500px;
-          height: 350px;
-          background: #1a1a1a;
-          border: 8px solid #2a2a2a;
-          border-radius: 12px;
-          animation: monitorFocus 1.5s ease-in-out forwards;
-        }
-
-        @keyframes monitorFocus {
-          from {
-            transform: scale(0.7);
-          }
-          to {
-            transform: scale(1.5);
-          }
-        }
-
-        .screen-glow {
-          position: absolute;
-          inset: 8px;
-          background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
-          animation: screenFlicker 3s ease-in-out infinite;
-        }
-
-        @keyframes screenFlicker {
-          0%, 100% {
-            opacity: 0.7;
-          }
-          50% {
-            opacity: 1;
-          }
-        }
-
-        /* Computer Scene */
-        .monitor-bezel {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: bezelZoom 1.5s ease-in-out forwards;
-        }
-
-        @keyframes bezelZoom {
-          from {
-            transform: scale(0.5);
-          }
-          to {
-            transform: scale(3);
-          }
-        }
-
-        .screen-frame {
-          position: relative;
-          width: 80%;
-          height: 80%;
-          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-          border: 3px solid #333;
-          overflow: hidden;
-        }
-
-        .screen-scanlines {
-          position: absolute;
-          inset: 0;
-          background: repeating-linear-gradient(
-            0deg,
-            rgba(0, 255, 255, 0.03) 0px,
-            transparent 2px,
-            transparent 4px
-          );
-          animation: scanlineMove 3s linear infinite;
-        }
-
-        @keyframes scanlineMove {
-          from {
-            transform: translateY(0);
-          }
-          to {
-            transform: translateY(20px);
-          }
-        }
-
-        /* Screen Scene */
-        .screen-content {
-          position: absolute;
-          inset: 0;
-          animation: screenReveal 1.5s ease-out forwards;
-        }
-
-        @keyframes screenReveal {
-          from {
-            transform: scale(5);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-
-        .digital-grid {
-          position: absolute;
-          inset: 0;
-          background-image: 
-            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-          background-size: 50px 50px;
-          animation: gridMove 2s linear infinite;
-        }
-
         @keyframes gridMove {
           0% {
             transform: translateY(0);
           }
           100% {
             transform: translateY(50px);
-          }
-        }
-
-        .data-streams {
-          position: absolute;
-          inset: 0;
-        }
-
-        .stream {
-          position: absolute;
-          width: 2px;
-          height: 100px;
-          background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 255, 0.8) 50%, transparent 100%);
-          animation: streamFall 3s linear infinite;
-        }
-
-        .stream-1 {
-          left: 20%;
-          animation-delay: 0s;
-        }
-
-        .stream-2 {
-          left: 50%;
-          animation-delay: 1s;
-        }
-
-        .stream-3 {
-          left: 80%;
-          animation-delay: 2s;
-        }
-
-        @keyframes streamFall {
-          from {
-            transform: translateY(-100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          to {
-            transform: translateY(100vh);
-            opacity: 0;
           }
         }
 
