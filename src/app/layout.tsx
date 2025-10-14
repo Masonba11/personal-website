@@ -24,7 +24,8 @@ export const metadata: Metadata = {
   authors: [{ name: "Mason Ball" }],
   icons: {
     icon: [
-      { url: "/favicon.ico?v=4", type: "image/x-icon" },
+      { url: "/favicon-v2.ico", type: "image/x-icon" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
     ],
     apple: [{ url: "/apple-icon.png" }],
   },
@@ -58,6 +59,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon-v2.ico" type="image/x-icon" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      </head>
       <body className={inter.className}>
         <LoadingScreen />
         <Header />
