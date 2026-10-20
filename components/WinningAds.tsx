@@ -190,27 +190,56 @@ function WinningAdCard({ ad, compact }: { ad: WinningAd; compact: boolean }) {
 
 function WinningAdVideo({ ad }: { ad: WinningAd }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const onOther = (event: Event) => {
+      if ((event as CustomEvent<string>).detail !== ad.id) setPlaying(false);
+    };
+    window.addEventListener("winning-ad-play", onOther);
+    return () => window.removeEventListener("winning-ad-play", onOther);
+  }, [ad.id]);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) setReady(true);
-        else node.pause();
-      },
-      { rootMargin: "160px" },
-    );
+    if (!node || !playing) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) node.pause();
+    });
     observer.observe(node);
+    void node.play().catch(() => undefined);
     return () => observer.disconnect();
-  }, []);
+  }, [playing]);
 
   if (!ad.videoSrc || !ad.approvedForPublishing) {
     return (
       <div className="flex aspect-[9/16] items-center justify-center bg-black p-6 text-center text-sm text-paper" role="img" aria-label={`Missing video for ${ad.company}`}>
         Video file missing: {ad.sourceFile}
       </div>
+    );
+  }
+
+  if (!playing) {
+    return (
+      <button
+        type="button"
+        className="relative block w-full bg-black"
+        style={{ aspectRatio: `${ad.width} / ${ad.height}` }}
+        aria-label={`Play ${ad.company} advertisement`}
+        onClick={() => {
+          window.dispatchEvent(new CustomEvent("winning-ad-play", { detail: ad.id }));
+          setPlaying(true);
+        }}
+      >
+        {ad.posterSrc ? (
+          // Poster only. The video file stays unloaded until play.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={ad.posterSrc} alt="" width={ad.width} height={ad.height} className="h-full w-full object-contain" />
+        ) : null}
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="rounded-full bg-gold px-4 py-2 text-sm font-medium text-ink">Play ad</span>
+        </span>
+      </button>
     );
   }
 
@@ -223,15 +252,10 @@ function WinningAdVideo({ ad }: { ad: WinningAd }) {
       poster={ad.posterSrc}
       controls
       playsInline
-      preload={ready ? "metadata" : "none"}
-      src={ready ? ad.videoSrc : undefined}
+      preload="none"
+      src={ad.videoSrc}
       aria-label={`${ad.company} ${ad.platform} advertisement`}
       title={`${ad.company} — ${ad.label}`}
-      onPlay={(event) => {
-        document.querySelectorAll<HTMLVideoElement>("video[data-winning-ad]").forEach((video) => {
-          if (video !== event.currentTarget) video.pause();
-        });
-      }}
     />
   );
 }
