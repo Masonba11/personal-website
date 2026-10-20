@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { site } from "@/lib/site";
+import { MeasurementConsent } from "@/components/landing/MeasurementConsent";
 import "./globals.css";
 
 const sans = Outfit({
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         <div id="main">{children}</div>
         <Footer />
+        <MeasurementConsent />
       </body>
     </html>
   );

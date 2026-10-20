@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import {
   isLandingSpam,
   landingMessage,
@@ -83,44 +83,7 @@ export async function confirmLandingReceipt(input: {
     maxAge: 60 * 30,
   });
 
-  const pixel = process.env.META_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  const token = process.env.META_CAPI_ACCESS_TOKEN;
-  if (!pixel || !token) return { capi: false as const };
-
-  const headerList = await headers();
-  const ip =
-    headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    headerList.get("x-real-ip") ||
-    "";
-  const userAgent = headerList.get("user-agent") || "";
-  const now = Math.floor(Date.now() / 1000);
-  const events = [
-    {
-      event_name: "Lead",
-      event_time: now,
-      event_id: input.eventId,
-      action_source: "website",
-      event_source_url: input.eventSourceUrl,
-      user_data: { client_ip_address: ip, client_user_agent: userAgent },
-      custom_data: { content_name: input.variant },
-    },
-  ];
-  if (input.qualified) {
-    events.push({
-      event_name: "QualifiedApplication",
-      event_time: now,
-      event_id: `${input.eventId}-qualified`,
-      action_source: "website",
-      event_source_url: input.eventSourceUrl,
-      user_data: { client_ip_address: ip, client_user_agent: userAgent },
-      custom_data: { content_name: input.variant },
-    });
-  }
-
-  const response = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ data: events, access_token: token }),
-  });
-  return { capi: response.ok };
+  // Browser provider acceptance is not a trusted server receipt. CAPI remains off
+  // until a verified delivery webhook and persistent event deduplication exist.
+  return { capi: false as const };
 }
