@@ -1,192 +1,455 @@
 "use client";
 
-import { cloneElement, isValidElement, useEffect, useRef, useState, type ReactElement } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { submitContact, type ContactState } from "@/app/contact/actions";
 import {
   adBudgetOptions,
+  challengeOptions,
+  formSteps,
   industryOptions,
-  marketingBudgetOptions,
+  leadVolumeOptions,
+  projectValueOptions,
+  responseTimeOptions,
   revenueOptions,
-  serviceOptions,
+  salesHandlerOptions,
+  stepForField,
+  thankYouMessage,
+  validateStep,
+  type ContactInput,
+  type FieldErrors,
 } from "@/lib/contact";
 import { site } from "@/lib/site";
+import { web3formsAccessKey } from "@/lib/web3forms";
 
-const initial: ContactState = { status: "idle", message: "", fieldErrors: {} };
+const initialInput: ContactInput = {
+  name: "",
+  businessName: "",
+  email: "",
+  phone: "",
+  website: "",
+  industry: "",
+  location: "",
+  projectValue: "",
+  revenue: "",
+  leadVolume: "",
+  adBudget: "",
+  responseTime: "",
+  salesHandler: "",
+  challenge: "",
+  servicesWanted: "",
+  details: "",
+  botcheck: "",
+  startedAt: "",
+};
+
+const idle: ContactState = { status: "idle", message: "", fieldErrors: {} };
 
 const fieldClass =
   "mt-2 w-full border border-ink/15 bg-white px-3 py-3 text-ink outline-none focus:border-gold-deep";
 
 export function ContactForm() {
-  const [state, setState] = useState<ContactState>(initial);
+  const [step, setStep] = useState(0);
+  const [reached, setReached] = useState(0);
+  const [input, setInput] = useState<ContactInput>(initialInput);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [status, setStatus] = useState<ContactState>(idle);
   const [pending, setPending] = useState(false);
-  const startedRef = useRef<number>(0);
+  const startedRef = useRef(0);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const skipInitialFocus = useRef(true);
+  const baseId = useId();
 
   useEffect(() => {
     startedRef.current = Date.now();
   }, []);
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const started = startedRef.current || Date.now() - 2000;
-    data.set("startedAt", String(started));
-    setPending(true);
-    const result = await submitContact(data);
-    setPending(false);
-    setState(result);
-    if (result.status === "success") form.reset();
+  useEffect(() => {
+    if (skipInitialFocus.current) {
+      skipInitialFocus.current = false;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [step]);
+
+  function update<K extends keyof ContactInput>(key: K, value: ContactInput[K]) {
+    setInput((current) => ({ ...current, [key]: value }));
+    setErrors((current) => ({ ...current, [key]: undefined }));
   }
 
-  if (state.status === "success") {
+  function goNext() {
+    const stepErrors = validateStep(step, input);
+    setErrors(stepErrors);
+    if (Object.keys(stepErrors).length > 0) return;
+    setStatus(idle);
+    const next = Math.min(step + 1, formSteps.length - 1);
+    setStep(next);
+    setReached((current) => Math.max(current, next));
+  }
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (step < formSteps.length - 1) {
+      goNext();
+      return;
+    }
+
+    for (let index = 0; index <= 3; index += 1) {
+      const stepErrors = validateStep(index, input);
+      if (Object.keys(stepErrors).length > 0) {
+        setErrors(stepErrors);
+        setStep(index);
+        return;
+      }
+    }
+
+    const data = new FormData();
+    (Object.keys(input) as (keyof ContactInput)[]).forEach((key) => {
+      data.set(key, input[key]);
+    });
+    data.set("startedAt", String(startedRef.current || Date.now() - 2000));
+    setPending(true);
+    const result = await submitContact(data);
+    if (result.status === "ready" && result.delivery) {
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            access_key: web3formsAccessKey,
+            subject: result.delivery.subject,
+            from_name: result.delivery.name,
+            name: result.delivery.name,
+            email: result.delivery.email,
+            phone: result.delivery.phone,
+            message: result.delivery.message,
+            botcheck: "",
+          }),
+        });
+        const body = (await response.json()) as { success?: boolean };
+        setStatus(
+          response.ok && body.success
+            ? { status: "success", message: thankYouMessage, fieldErrors: {} }
+            : {
+                status: "error",
+                message:
+                  "The form didn't go through. Email me directly and include your business name.",
+                fieldErrors: {},
+              },
+        );
+      } catch {
+        setStatus({
+          status: "error",
+          message: "The form didn't go through. Email me directly and include your business name.",
+          fieldErrors: {},
+        });
+      }
+      setPending(false);
+      return;
+    }
+    setPending(false);
+    setStatus(result);
+    if (result.status === "invalid") {
+      setErrors(result.fieldErrors);
+      const first = Object.keys(result.fieldErrors)[0] as keyof FieldErrors | undefined;
+      if (first) setStep(stepForField(first));
+    }
+  }
+
+  if (status.status === "success") {
     return (
       <div className="border border-gold/50 bg-white p-8" role="status">
-        <h2 className="font-serif text-3xl">Message sent.</h2>
-        <p className="mt-4 leading-relaxed text-body">{state.message}</p>
+        <h2 className="font-serif text-3xl">Request received.</h2>
+        <p className="mt-4 leading-relaxed text-body">{status.message}</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6" noValidate>
-      <p className="text-sm text-body">
-        Name, business, and email are required. Everything else helps me see whether paid marketing is a fit, and you can skip it.
-      </p>
-      {state.message ? (
-        <p className="border border-ink/15 bg-white px-4 py-3 text-sm" role="alert">
-          {state.message}
-          {state.status === "error" ? (
-            <>
-              {" "}
-              <a className="underline" href={`mailto:${site.email}`}>
-                {site.email}
-              </a>
-            </>
-          ) : null}
+    <form onSubmit={onSubmit} className="border border-ink/10 bg-white p-5 md:p-8" noValidate>
+      <nav aria-label="Form progress">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-gold-deep">
+          Step {step + 1} of {formSteps.length}
         </p>
-      ) : null}
+        <ol className="mt-3 grid grid-cols-5 gap-2">
+          {formSteps.map((label, index) => {
+            const complete = index < step;
+            const current = index === step;
+            return (
+              <li key={label}>
+                <button
+                  type="button"
+                  className="block w-full text-left disabled:cursor-default"
+                  disabled={index > reached}
+                  aria-current={current ? "step" : undefined}
+                  onClick={() => {
+                    if (index <= reached) setStep(index);
+                  }}
+                >
+                  <span className={`block h-1 ${current || complete ? "bg-gold" : "bg-ink/10"}`} />
+                  <span className={`mt-2 hidden text-xs md:block ${current ? "text-ink" : "text-body"}`}>{label}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Field label="Full name" id="name" error={state.fieldErrors.name} required>
-          <input id="name" name="name" autoComplete="name" required className={fieldClass} />
-        </Field>
-        <Field label="Business name" id="businessName" error={state.fieldErrors.businessName} required>
-          <input id="businessName" name="businessName" autoComplete="organization" required className={fieldClass} />
-        </Field>
-        <Field label="Email address" id="email" error={state.fieldErrors.email} required>
-          <input id="email" name="email" type="email" autoComplete="email" required className={fieldClass} />
-        </Field>
-        <Field label="Phone number" id="phone" error={state.fieldErrors.phone}>
-          <input id="phone" name="phone" type="tel" autoComplete="tel" className={fieldClass} />
-        </Field>
-        <Field label="Website URL" id="website" error={state.fieldErrors.website}>
-          <input id="website" name="website" inputMode="url" autoComplete="url" className={fieldClass} placeholder="yourcompany.com" />
-        </Field>
-        <Field label="Business industry" id="industry" error={state.fieldErrors.industry}>
-          <select id="industry" name="industry" className={fieldClass} defaultValue="">
-            <option value="">Select</option>
-            {industryOptions.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Business location" id="location" error={state.fieldErrors.location}>
-          <input id="location" name="location" autoComplete="address-level2" className={fieldClass} placeholder="City, state" />
-        </Field>
-        <Field label="Monthly revenue range" id="revenue" error={state.fieldErrors.revenue}>
-          <select id="revenue" name="revenue" className={fieldClass} defaultValue="">
-            <option value="">Select</option>
-            {revenueOptions.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Current monthly advertising budget" id="adBudget" error={state.fieldErrors.adBudget}>
-          <select id="adBudget" name="adBudget" className={fieldClass} defaultValue="">
-            <option value="">Select</option>
-            {adBudgetOptions.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Monthly marketing budget" id="marketingBudget" error={state.fieldErrors.marketingBudget}>
-          <select id="marketingBudget" name="marketingBudget" className={fieldClass} defaultValue="">
-            <option value="">Select</option>
-            {marketingBudgetOptions.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
+      <div className="step-in mt-8" key={step}>
+        <h2 ref={headingRef} tabIndex={-1} id={`${baseId}-title`} className="font-serif text-3xl outline-none">
+          {formSteps[step]}
+        </h2>
+
+        {status.message ? (
+          <p className="mt-4 border border-ink/15 px-4 py-3 text-sm" role="alert">
+            {status.message}
+            {status.status === "error" ? (
+              <>
+                {" "}
+                <a className="underline" href={`mailto:${site.email}`}>
+                  {site.email}
+                </a>
+              </>
+            ) : null}
+          </p>
+        ) : null}
+
+        {step === 0 ? (
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <TextField id="name" label="Full Name" required value={input.name} error={errors.name} autoComplete="name" onChange={(value) => update("name", value)} />
+            <TextField id="businessName" label="Business Name" required value={input.businessName} error={errors.businessName} autoComplete="organization" onChange={(value) => update("businessName", value)} />
+            <TextField id="email" label="Email Address" type="email" required value={input.email} error={errors.email} autoComplete="email" onChange={(value) => update("email", value)} />
+            <TextField id="phone" label="Phone Number" type="tel" required value={input.phone} error={errors.phone} autoComplete="tel" onChange={(value) => update("phone", value)} />
+            <TextField id="website" label="Website URL" type="url" value={input.website} error={errors.website} autoComplete="url" placeholder="yourcompany.com" onChange={(value) => update("website", value)} />
+            <SelectField id="industry" label="What Industry Are You In?" required value={input.industry} error={errors.industry} options={industryOptions} onChange={(value) => update("industry", value)} />
+            <div className="md:col-span-2">
+              <TextField id="location" label="Where Does Your Business Operate?" required value={input.location} error={errors.location} placeholder="City, State or Service Area" onChange={(value) => update("location", value)} />
+            </div>
+          </div>
+        ) : null}
+
+        {step === 1 ? (
+          <div className="mt-6 grid gap-6">
+            <SelectField id="projectValue" label="What Is Your Average Project Value?" required value={input.projectValue} error={errors.projectValue} options={projectValueOptions} onChange={(value) => update("projectValue", value)} />
+            <SelectField id="revenue" label="What Is Your Approximate Monthly Business Revenue?" value={input.revenue} error={errors.revenue} options={revenueOptions} onChange={(value) => update("revenue", value)} />
+            <SelectField id="leadVolume" label="How Many Additional Leads Would You Like Per Month?" required value={input.leadVolume} error={errors.leadVolume} options={leadVolumeOptions} onChange={(value) => update("leadVolume", value)} />
+          </div>
+        ) : null}
+
+        {step === 2 ? (
+          <div className="mt-6">
+            <h3 className="font-serif text-2xl">Let&apos;s Talk Advertising Budget</h3>
+            <p className="mt-3 leading-relaxed text-body">
+              With our pay-per-lead model, your advertising budget is separate from the cost of qualified leads. You fund the advertising campaigns, and we charge an agreed amount for each qualified lead generated.
+            </p>
+            <div className="mt-6">
+              <SelectField id="adBudget" label="How Much Are You Willing to Invest in Advertising Each Month?" required value={input.adBudget} error={errors.adBudget} options={adBudgetOptions} onChange={(value) => update("adBudget", value)} />
+            </div>
+            <p className="mt-3 text-sm text-body">
+              Advertising spend is paid separately from lead fees. We&apos;ll discuss a realistic starting budget based on your market and goals.
+            </p>
+          </div>
+        ) : null}
+
+        {step === 3 ? (
+          <div className="mt-6 grid gap-6">
+            <SelectField id="responseTime" label="How Quickly Can You Typically Contact a New Lead?" required value={input.responseTime} error={errors.responseTime} options={responseTimeOptions} onChange={(value) => update("responseTime", value)} />
+            <SelectField id="salesHandler" label="Who Handles Sales and Estimates?" value={input.salesHandler} error={errors.salesHandler} options={salesHandlerOptions} onChange={(value) => update("salesHandler", value)} />
+            <SelectField id="challenge" label="What Is Your Biggest Customer Acquisition Challenge?" required value={input.challenge} error={errors.challenge} options={challengeOptions} onChange={(value) => update("challenge", value)} />
+            <TextArea
+              id="servicesWanted"
+              label="What Services Do You Want More Customers For?"
+              required
+              value={input.servicesWanted}
+              error={errors.servicesWanted}
+              placeholder="Example: Bathroom remodels, kitchen renovations, landscaping installations, window cleaning, or residential painting."
+              onChange={(value) => update("servicesWanted", value)}
+            />
+          </div>
+        ) : null}
+
+        {step === 4 ? (
+          <div className="mt-6">
+            <TextArea
+              id="details"
+              label="Anything Else We Should Know?"
+              value={input.details}
+              error={errors.details}
+              placeholder="Tell us more about your business, your goals, or your current marketing challenges."
+              onChange={(value) => update("details", value)}
+            />
+            <p className="mt-6 text-sm leading-relaxed text-body">
+              No obligation. We&apos;ll review your business, market, advertising budget, and lead goals to determine whether working together makes sense.
+            </p>
+          </div>
+        ) : null}
       </div>
 
-      <Field label="Biggest challenge" id="challenge" error={state.fieldErrors.challenge}>
-        <textarea id="challenge" name="challenge" rows={4} className={fieldClass} />
-      </Field>
-
-      <fieldset>
-        <legend className="text-sm font-medium">Primary services you need</legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          {serviceOptions.map((option) => (
-            <label key={option} className="flex items-center gap-3 text-sm">
-              <input type="checkbox" name="services" value={option} className="size-4 accent-gold-deep" />
-              {option}
-            </label>
-          ))}
-        </div>
-        {state.fieldErrors.services ? <p className="mt-2 text-sm text-gold-deep">{state.fieldErrors.services}</p> : null}
-      </fieldset>
-
-      <Field label="Optional additional information" id="details" error={state.fieldErrors.details}>
-        <textarea id="details" name="details" rows={4} className={fieldClass} />
-      </Field>
-
-      <div className="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute left-[-9999px] h-0 overflow-hidden" aria-hidden="true">
         <label htmlFor="botcheck">Leave this field empty</label>
-        <input id="botcheck" name="botcheck" type="text" tabIndex={-1} autoComplete="off" />
+        <input id="botcheck" name="botcheck" tabIndex={-1} autoComplete="off" value={input.botcheck} onChange={(event) => update("botcheck", event.target.value)} />
       </div>
-      <input type="hidden" name="startedAt" defaultValue="" />
+      <input type="hidden" name="startedAt" value="" />
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-gold px-6 py-3 text-sm font-medium text-ink disabled:opacity-60"
-      >
-        {pending ? "Sending…" : "Let's See If We Can Grow Your Business"}
-      </button>
+      <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        {step > 0 ? (
+          <button type="button" className="border border-ink/20 px-5 py-3 text-sm" onClick={() => setStep((current) => current - 1)}>
+            Back
+          </button>
+        ) : (
+          <span />
+        )}
+        {step < formSteps.length - 1 ? (
+          <button type="button" className="bg-gold px-5 py-3 text-sm font-medium text-ink" onClick={goNext}>
+            Continue
+          </button>
+        ) : (
+          <button type="submit" className="bg-gold px-5 py-3 text-sm font-medium text-ink disabled:opacity-60" disabled={pending}>
+            {pending ? "Sending…" : "Request My Lead Generation Plan"}
+          </button>
+        )}
+      </div>
     </form>
   );
 }
 
-function Field({
+function TextField({
   id,
   label,
+  value,
   error,
+  onChange,
+  type = "text",
   required,
-  children,
+  autoComplete,
+  placeholder,
 }: {
   id: string;
   label: string;
+  value: string;
   error?: string;
+  onChange: (value: string) => void;
+  type?: string;
   required?: boolean;
-  children: React.ReactNode;
+  autoComplete?: string;
+  placeholder?: string;
 }) {
   const errorId = `${id}-error`;
-  const control = isValidElement(children)
-    ? cloneElement(children as ReactElement<{ "aria-invalid"?: boolean; "aria-describedby"?: string }>, {
-        "aria-invalid": error ? true : undefined,
-        "aria-describedby": error ? errorId : undefined,
-      })
-    : children;
-
   return (
     <div>
       <label htmlFor={id} className="text-sm font-medium">
         {label}
         {required ? <span className="text-gold-deep"> *</span> : null}
       </label>
-      {control}
+      <input
+        id={id}
+        name={id}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
+        className={fieldClass}
+        onChange={(event) => onChange(event.target.value)}
+      />
       {error ? (
-        <p id={errorId} className="mt-2 text-sm text-gold-deep">
+        <p id={errorId} className="mt-2 text-sm text-gold-deep" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function SelectField({
+  id,
+  label,
+  value,
+  error,
+  options,
+  onChange,
+  required,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  error?: string;
+  options: readonly string[];
+  onChange: (value: string) => void;
+  required?: boolean;
+}) {
+  const errorId = `${id}-error`;
+  return (
+    <div>
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+        {required ? <span className="text-gold-deep"> *</span> : null}
+      </label>
+      <select
+        id={id}
+        name={id}
+        value={value}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
+        className={fieldClass}
+        onChange={(event) => onChange(event.target.value)}
+      >
+        <option value="">Select</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      {error ? (
+        <p id={errorId} className="mt-2 text-sm text-gold-deep" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function TextArea({
+  id,
+  label,
+  value,
+  error,
+  onChange,
+  required,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  error?: string;
+  onChange: (value: string) => void;
+  required?: boolean;
+  placeholder?: string;
+}) {
+  const errorId = `${id}-error`;
+  return (
+    <div>
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+        {required ? <span className="text-gold-deep"> *</span> : null}
+      </label>
+      <textarea
+        id={id}
+        name={id}
+        rows={4}
+        value={value}
+        placeholder={placeholder}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
+        className={fieldClass}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      {error ? (
+        <p id={errorId} className="mt-2 text-sm text-gold-deep" role="alert">
           {error}
         </p>
       ) : null}

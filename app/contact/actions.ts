@@ -1,24 +1,33 @@
 "use server";
 
-import { contactMessage, isSpam, readContactForm, validateContact, type FieldErrors } from "@/lib/contact";
+import {
+  contactMessage,
+  isSpam,
+  qualifyLead,
+  readContactForm,
+  thankYouMessage,
+  validateContact,
+  type FieldErrors,
+} from "@/lib/contact";
 
 export type ContactState = {
-  status: "idle" | "success" | "error" | "invalid";
+  status: "idle" | "success" | "error" | "invalid" | "ready";
   message: string;
   fieldErrors: FieldErrors;
+  delivery?: {
+    subject: string;
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+  };
 };
-
-const EXISTING_WEB3FORMS_KEY = "445fec98-4d22-4adc-b9bb-ddf078751f46";
 
 export async function submitContact(formData: FormData): Promise<ContactState> {
   const input = readContactForm(formData);
 
   if (isSpam(input)) {
-    return {
-      status: "success",
-      message: "Thanks. If this is a fit, I'll reply by email.",
-      fieldErrors: {},
-    };
+    return { status: "success", message: thankYouMessage, fieldErrors: {} };
   }
 
   const fieldErrors = validateContact(input);
@@ -30,43 +39,17 @@ export async function submitContact(formData: FormData): Promise<ContactState> {
     };
   }
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY || EXISTING_WEB3FORMS_KEY;
-
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject: `MBall Marketing consultation — ${input.businessName}`,
-        from_name: input.name,
-        name: input.name,
-        email: input.email,
-        phone: input.phone,
-        message: contactMessage(input),
-        botcheck: "",
-      }),
-    });
-
-    const result = (await response.json()) as { success?: boolean };
-    if (!response.ok || !result.success) {
-      return {
-        status: "error",
-        message: "The form didn't go through. Email me directly and include your business name.",
-        fieldErrors: {},
-      };
-    }
-  } catch {
-    return {
-      status: "error",
-      message: "The form didn't go through. Email me directly and include your business name.",
-      fieldErrors: {},
-    };
-  }
-
+  const fit = qualifyLead(input);
   return {
-    status: "success",
-    message: "I have it. I read these myself and typically reply within one business day.",
+    status: "ready",
+    message: "",
     fieldErrors: {},
+    delivery: {
+      subject: `Lead request — ${input.businessName} — ${fit}`,
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      message: contactMessage(input, fit),
+    },
   };
 }
