@@ -1,2 +1,3 @@
-# personal-website
-repo for masonball.com
+# MBall Marketing
+
+Source for [masonball.com](https://masonball.com).

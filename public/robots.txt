@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://masonball.com/sitemap.xml
-
