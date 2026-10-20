@@ -28,12 +28,15 @@ export function Header() {
   }, [open]);
 
   if (pathname.startsWith("/lp")) {
+    const stay = pathname === "/lp/results";
     return (
       <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/95 text-paper backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 md:px-8">
-          <Logo />
+          <Logo linked={!stay} />
           <nav className="flex items-center gap-4 text-sm" aria-label="Landing">
-            <a href="/privacy" className="text-paper/80 hover:text-paper">Privacy</a>
+            <a href="/privacy" className="text-paper/80 hover:text-paper" {...(stay ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+              Privacy
+            </a>
             {pathname !== "/lp/thank-you" ? (
               <a href="#apply" className="border border-gold px-3 py-2 text-gold">See If Your Business Qualifies</a>
             ) : null}

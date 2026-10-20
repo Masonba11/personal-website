@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { LandingBoot, QualifierLink, StickyApply } from "@/components/landing/LandingBits";
 import { LandingForm } from "@/components/landing/LandingForm";
 import { LandingHero } from "@/components/landing/Hero";
@@ -21,17 +20,14 @@ export const metadata: Metadata = {
 
 const cards = [
   {
-    href: "/case-studies/ball-bros-screens",
     company: "Ball Bros Screens",
     lines: ["143 customer inquiries", `${usd(ballBros.customerCpl)} CPL`, "Campaign period: July–October 2026"],
   },
   {
-    href: "/case-studies/arizona-window-washing-pros",
     company: "Arizona Window Washing Pros",
     lines: ["212 Meta leads", `${usd(azwwp.after.cpl)} CPL`, "Campaign period: June–October 2026"],
   },
   {
-    href: "/case-studies/sublime-design-build",
     company: "Sublime Design & Build",
     lines: ["32 leads", `${usd(sublimeCpl)} CPL`, "Early-stage contractor campaign."],
   },
@@ -56,19 +52,18 @@ export default function ResultsLandingPage() {
       <section className="mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
         <h2 className="font-serif text-3xl md:text-4xl">Campaign results</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-body">
-          Counts below are advertising inquiries for the stated periods. They are not booked jobs or collected revenue.{" "}
-          <Link href="/methodology" className="underline">How the numbers are counted</Link>.
+          Counts below are lead-form inquiries from the named ad accounts for the stated periods. They are not booked jobs or collected revenue.
         </p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {cards.map((card) => (
-            <Link key={card.href} href={card.href} className="border border-ink/10 bg-white p-5 hover:border-gold">
+            <article key={card.company} className="border border-ink/10 bg-white p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-gold-deep">{card.company}</p>
               <ul className="mt-4 space-y-2">
                 {card.lines.map((line) => (
                   <li key={line} className="font-serif text-2xl leading-snug">{line}</li>
                 ))}
               </ul>
-            </Link>
+            </article>
           ))}
         </div>
         <p className="mt-4 text-xs leading-relaxed text-mist">
@@ -98,14 +93,24 @@ export default function ResultsLandingPage() {
               <p className="mt-2 text-sm text-body">Meta cost per lead, compared with January–May 2026.</p>
             </div>
           </div>
-          <div className="mt-8 grid gap-6">
-            {before ? <ProofScreenshot shot={before} /> : null}
-            {after ? <ProofScreenshot shot={after} /> : null}
-          </div>
         </div>
       </section>
+      <section className="mx-auto w-full max-w-6xl px-5 py-10 md:px-8">
+        <QualifierLink variant="results" className="inline-flex bg-ink px-5 py-3 text-paper">
+          See If Your Business Qualifies
+        </QualifierLink>
+      </section>
+      <Pricing />
+      <section className="mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
+        <LandingForm variant="results" />
+      </section>
       <section className="mx-auto grid w-full max-w-6xl gap-6 px-5 py-14 md:px-8">
-        <h2 className="font-serif text-3xl">Advertising screenshots</h2>
+        <h2 className="font-serif text-3xl">The ad account screenshots</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-body">
+          Tap a screenshot to view the full report.
+        </p>
+        {before ? <ProofScreenshot shot={before} /> : null}
+        {after ? <ProofScreenshot shot={after} /> : null}
         {ball ? <ProofScreenshot shot={ball} /> : null}
         {yard ? <ProofScreenshot shot={yard} /> : null}
         {mountains ? <ProofScreenshot shot={mountains} /> : null}
@@ -118,17 +123,11 @@ export default function ResultsLandingPage() {
             <p className="mt-5 text-lg leading-relaxed text-mist">
               I&apos;m Mason Ball. I&apos;ve built and operated home-service companies, paid for my own advertising, and experienced firsthand what happens when campaigns don&apos;t produce profitable customers. I use that experience to help other contractors generate qualified customer inquiries.
             </p>
+            <QualifierLink variant="results" className="mt-8 inline-flex bg-gold px-5 py-3 text-ink">
+              See If Your Business Qualifies
+            </QualifierLink>
           </div>
         </div>
-      </section>
-      <section className="mx-auto w-full max-w-6xl px-5 py-12 md:px-8">
-        <QualifierLink variant="results" className="inline-flex bg-ink px-5 py-3 text-paper">
-          See If Your Business Qualifies
-        </QualifierLink>
-      </section>
-      <Pricing />
-      <section className="mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
-        <LandingForm variant="results" />
       </section>
       <StickyApply variant="results" />
     </div>
