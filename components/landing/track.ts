@@ -12,8 +12,8 @@ let lastPath = "";
 export function hasMeasurementConsent() {
   try {
     if ((navigator as Navigator & {globalPrivacyControl?: boolean}).globalPrivacyControl) return false;
-    return localStorage.getItem("mball_measurement_consent") === "granted";
-  } catch { return false; }
+    return localStorage.getItem("mball_measurement_consent") !== "denied";
+  } catch { return true; }
 }
 export function setMeasurementConsent(granted: boolean) {
   try { localStorage.setItem("mball_measurement_consent", granted ? "granted" : "denied"); } catch { /* optional storage */ }
@@ -52,7 +52,7 @@ function script(src: string, id: string) {
 }
 export function bootAnalytics() {
   if (!hasMeasurementConsent()) return;
-  const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID || "788508353820886";
   if (pixel && !window.fbq) {
     const fbq: Pixel = function (...args: unknown[]) {
       if (fbq.callMethod) fbq.callMethod(...args); else fbq.queue?.push(args);

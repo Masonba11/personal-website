@@ -3,9 +3,11 @@ import { Instrument_Serif, Outfit, Yellowtail } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
-import { site } from "@/lib/site";
 import { MeasurementConsent } from "@/components/landing/MeasurementConsent";
+import { site } from "@/lib/site";
 import "./globals.css";
+
+const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "788508353820886";
 
 const sans = Outfit({
   subsets: ["latin"],
@@ -108,6 +110,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div id="main">{children}</div>
         <Footer />
         <MeasurementConsent />
+        <noscript>
+          {/* Meta requires this raw image when JavaScript is unavailable. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height={1}
+            width={1}
+            style={{ display: "none" }}
+            alt=""
+            src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+          />
+        </noscript>
       </body>
     </html>
   );

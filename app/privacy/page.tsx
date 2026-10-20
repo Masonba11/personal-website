@@ -21,7 +21,7 @@ export default function PrivacyPage() {
         Paid landing pages may store campaign parameters such as utm values and advertising click IDs with the application. They are used to tell which ad the request came from. They are not published.
       </p>
       <p>
-        When configured and allowed through your advertising measurement preference, Meta Pixel and analytics tools receive page visits and accepted-application events. Declining measurement does not prevent applying. We honor browser Global Privacy Control for this measurement. Your choice is saved locally on your device; you can change it through Advertising measurement preferences. Application answers are not placed in the page address or Pixel event parameters. Conversions API is not currently active.
+        Meta Pixel records page visits and an application event after a form is accepted. You can turn that measurement off under Advertising measurement preferences, and a browser Global Privacy Control signal turns it off as well. Declining measurement does not prevent applying. Application answers are not placed in the page address or Pixel event parameters. Conversions API is not currently active.
       </p>
       <p>
         To ask about a submission, email <a className="underline" href={`mailto:${site.email}`}>{site.email}</a>.

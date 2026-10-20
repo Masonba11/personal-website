@@ -11,13 +11,12 @@ export function MeasurementConsent() {
   const pathname = usePathname();
   useEffect(() => { bootAnalytics(); }, [pathname]);
   function choose(granted: boolean) { setMeasurementConsent(granted); setOpen(false); }
-  if (!process.env.NEXT_PUBLIC_META_PIXEL_ID && !process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) return null;
   return <aside aria-label="Advertising measurement preferences" className="border-t border-ink/15 bg-paper p-5 text-sm">
     <button className="underline" onClick={() => setOpen(!open)}>Advertising measurement preferences</button>
-    {open || !decision ? <div className="mx-auto mt-3 max-w-3xl space-y-3">
+    {open ? <div className="mx-auto mt-3 max-w-3xl space-y-3">
       <p>May we use Meta and configured analytics tools to measure page visits and accepted applications? You can apply without accepting. <a href="/privacy" className="underline">Privacy notice</a>.</p>
       <div className="flex flex-wrap gap-3"><button className="border border-ink px-4 py-2" onClick={() => choose(false)}>Decline</button><button className="border border-ink px-4 py-2" onClick={() => choose(true)}>Allow measurement</button></div>
-      <p>Current choice: {hasMeasurementConsent() ? "Allowed" : "Off"}. Your browser’s Global Privacy Control overrides this choice.</p>
+      <p>Current choice: {decision === "denied" || !hasMeasurementConsent() ? "Off" : "Allowed"}. Your browser’s Global Privacy Control overrides this choice.</p>
     </div> : null}
   </aside>;
 }
