@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyView } from "@/components/CaseStudyView";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { JsonLd } from "@/components/JsonLd";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
+import { featureForCaseStudy } from "@/lib/winning-ads";
 import { site } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -54,6 +56,16 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <>
       <JsonLd data={schema} />
       <CaseStudyView study={study} />
+      <WinningAdsShowcase
+        feature={featureForCaseStudy(study.slug)}
+        headline="These aren't examples. These are the actual campaigns."
+        lede="Watch the Meta ads from the home-service accounts. The ad that matches this business is first. A campaign from one trade is not presented as proof for another."
+        note={
+          featureForCaseStudy(study.slug)
+            ? undefined
+            : "This study does not have a published video ad. The ads below are from the other home-service accounts."
+        }
+      />
     </>
   );
 }

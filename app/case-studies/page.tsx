@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { Shell } from "@/components/Shell";
 import { caseStudies } from "@/lib/case-studies";
 import { pageMeta } from "@/lib/site";
@@ -18,6 +19,10 @@ export default function CaseStudiesPage() {
         eyebrow="Results"
         title="Results you can open and inspect."
         lede="Each study names the business, the dates, and what the number is — a lead form, a reported conversion, or an estimate. Hiring inquiries are not customer leads. Pipeline is not revenue."
+      />
+      <WinningAdsShowcase
+        headline="Stop taking an agency's word for it. See the actual ads."
+        lede="These aren't mockups. These aren't hypothetical campaigns. These are real advertisements we've created and managed for real home service businesses."
       />
       <Shell className="grid gap-6 py-16 md:grid-cols-2 md:py-24">
         {caseStudies.map((study) => (

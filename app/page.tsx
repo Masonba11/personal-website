@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CtaLink } from "@/components/CtaLink";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { FounderPortrait } from "@/components/FounderPortrait";
 import { Shell } from "@/components/Shell";
 import { homepageMetrics } from "@/lib/case-studies";
@@ -89,6 +90,11 @@ export default function HomePage() {
           <FounderPortrait />
         </Shell>
       </section>
+
+      <WinningAdsShowcase
+        headline="Real ads. Real leads. Real revenue."
+        lede="These aren't mockups. These aren't hypothetical campaigns. These are real advertisements we've created and managed for real home service businesses. Take a look at the actual ads behind the results."
+      />
 
       <section className="border-y border-ink/10 bg-white">
         <Shell className="py-16 md:py-24">

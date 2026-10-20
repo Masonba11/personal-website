@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LandingBoot, QualifierLink, StickyApply } from "@/components/landing/LandingBits";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { LandingForm } from "@/components/landing/LandingForm";
 import { LandingHero } from "@/components/landing/Hero";
 import { Pricing } from "@/components/landing/Pricing";
@@ -47,6 +48,12 @@ export default function VideoLandingPage() {
     <div className="pb-24 md:pb-0">
       <LandingBoot variant="video" />
       <LandingHero variant="video" secondary={{ href: "#story", label: "Watch My Story" }} />
+      <WinningAdsShowcase
+        variant="landing"
+        landingVariant="video"
+        headline="Don't just take our word for it. Watch the actual ads we've run for home service businesses."
+        lede="From window cleaning to solar screens and general contracting, these are real advertisements built to attract homeowners and generate new business opportunities."
+      />
       <section id="story" className="scroll-mt-28 mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
         <h2 className="font-serif text-3xl md:text-4xl">How I Generated Hundreds of Leads for My Own Businesses</h2>
         <p className="mt-3 max-w-2xl text-body">

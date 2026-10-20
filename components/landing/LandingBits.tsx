@@ -12,11 +12,12 @@ export function LandingBoot({ variant }: { variant: string }) {
 }
 
 export function QualifierLink({ children, className, variant }: { children: React.ReactNode; className?: string; variant: string }) {
+  const label = typeof children === "string" ? children : "See If Your Business Qualifies";
   return (
     <a
       href="#apply"
       className={className}
-      onClick={() => track("cta_click", { variant, cta: "See If Your Business Qualifies" })}
+      onClick={() => track("cta_click", { variant, cta: label })}
     >
       {children}
     </a>

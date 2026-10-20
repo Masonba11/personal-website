@@ -57,6 +57,11 @@ export function Footer() {
               </li>
             ))}
             <li>
+              <Link href="/results" className="text-paper/80 hover:text-paper">
+                The actual ads
+              </Link>
+            </li>
+            <li>
               <Link href="/methodology" className="text-paper/80 hover:text-paper">
                 How the numbers are counted
               </Link>

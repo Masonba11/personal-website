@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CtaLink } from "@/components/CtaLink";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { FounderPortrait } from "@/components/FounderPortrait";
 import { PageHero } from "@/components/PageHero";
 import { Shell } from "@/components/Shell";
@@ -59,6 +60,11 @@ export default function AboutPage() {
           </CtaLink>
         </div>
       </Shell>
+      <WinningAdsShowcase
+        variant="compact"
+        headline="These aren't examples. These are the actual campaigns."
+        lede="The same accounts described above. These are the Meta ads that ran for window cleaning, solar screens, and remodeling."
+      />
     </>
   );
 }

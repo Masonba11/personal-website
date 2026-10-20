@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CtaLink } from "@/components/CtaLink";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { PageHero } from "@/components/PageHero";
 import { Shell } from "@/components/Shell";
 import { services } from "@/lib/services";
@@ -19,6 +20,11 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="Marketing should make business sense."
         lede="I help home-service companies with the channel that matches how customers actually find them. Facebook ads for contractors, Google Ads, local SEO, and websites are all available. You don't get a bundle of services you didn't ask for."
+      />
+      <WinningAdsShowcase
+        variant="compact"
+        headline="Your next customer could come from an ad just like these."
+        lede="Real Meta ads for window cleaning, solar screens, and general contracting. Watch the full set on the advertising portfolio."
       />
       <Shell className="space-y-16 py-16 md:py-24">
         <p className="max-w-3xl text-lg leading-relaxed text-body">

@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/services",
     "/case-studies",
+    "/results",
     "/contact",
     "/methodology",
     ...caseStudies.map((study) => `/case-studies/${study.slug}`),

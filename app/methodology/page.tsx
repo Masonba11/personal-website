@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
+import { WinningAdsShowcase } from "@/components/WinningAds";
 import { Shell } from "@/components/Shell";
 import { azwwpCplReduction, ballBrosEstimatedSales, pct, usd, yardIllustrativeLtv } from "@/lib/figures";
 import { pageMeta } from "@/lib/site";
@@ -18,6 +19,11 @@ export default function MethodologyPage() {
         eyebrow="Methodology"
         title="What each number is, and what it is not."
         lede="The homepage metrics come from different ad accounts and different date ranges. They are not a single campaign, and they are not added into a revenue total."
+      />
+      <WinningAdsShowcase
+        variant="compact"
+        headline="Real ads. Real leads. Real revenue."
+        lede="The videos are the ads. The numbers under them on the portfolio page are lead-form inquiries and ad spend, not booked jobs or collected revenue."
       />
       <Shell className="max-w-3xl space-y-10 py-16 text-lg leading-relaxed text-body md:py-24">
         <section>
