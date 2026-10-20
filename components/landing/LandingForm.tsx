@@ -71,6 +71,7 @@ export function LandingForm({ variant }: { variant: LandingVariant }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const started = useRef(0);
+  const submitting = useRef(false);
   const startedForm = useRef(false);
   const attribution = useRef({
     utmSource: "",
@@ -118,6 +119,7 @@ export function LandingForm({ variant }: { variant: LandingVariant }) {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting.current) return;
     if (step < landingSteps.length - 1) {
       goNext();
       return;
@@ -144,61 +146,66 @@ export function LandingForm({ variant }: { variant: LandingVariant }) {
     data.set("pageUrl", attribution.current.pageUrl);
     data.set("startedAt", String(started.current || Date.now() - 2000));
     track("application_submitted", { variant }, { once: true });
+    submitting.current = true;
     setPending(true);
-    const result = await submitLanding(data);
+    try {
+      const result = await submitLanding(data);
 
-    if (result.status === "success") {
-      setPending(false);
-      setMessage("Thanks. We'll review your business and reply by email if working together makes sense.");
-      return;
-    }
-
-    if (result.status === "ready" && result.delivery && result.tracking) {
-      try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            access_key: web3formsAccessKey,
-            subject: result.delivery.subject,
-            from_name: result.delivery.name,
-            name: result.delivery.name,
-            email: result.delivery.email,
-            phone: result.delivery.phone,
-            message: result.delivery.message,
-            botcheck: "",
-          }),
-        });
-        const body = (await response.json()) as { success?: boolean };
-        if (!response.ok || !body.success) {
-          setMessage("The form didn't go through. Email masonjball@gmail.com and include your business name.");
-          setPending(false);
-          return;
-        }
-        await confirmLandingReceipt({
-          eventId: result.tracking.eventId,
-          qualified: result.tracking.qualified,
-          variant: result.tracking.variant,
-          eventSourceUrl: window.location.href.split("#")[0],
-        });
-        track("application_received", { variant: result.tracking.variant }, { eventId: result.tracking.eventId });
-        if (result.tracking.qualified) {
-          track("qualified_application", { variant: result.tracking.variant }, { eventId: `${result.tracking.eventId}-qualified` });
-        }
-        router.push("/lp/thank-you");
-      } catch {
-        setMessage("The form didn't go through. Email masonjball@gmail.com and include your business name.");
+      if (result.status === "success") {
+        setPending(false);
+        setMessage("Thanks. We'll review your business and reply by email if working together makes sense.");
+        return;
       }
-      setPending(false);
-      return;
-    }
 
-    setPending(false);
-    setMessage(result.message);
-    if (result.status === "invalid") {
-      setErrors(result.fieldErrors);
-      const first = Object.keys(result.fieldErrors)[0] as keyof LandingErrors | undefined;
-      if (first) setStep(landingStepForField(first));
+      if (result.status === "ready" && result.delivery && result.tracking) {
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+              access_key: web3formsAccessKey,
+              subject: result.delivery.subject,
+              from_name: result.delivery.name,
+              name: result.delivery.name,
+              email: result.delivery.email,
+              phone: result.delivery.phone,
+              message: result.delivery.message,
+              botcheck: "",
+            }),
+          });
+          const body = (await response.json()) as { success?: boolean };
+          if (!response.ok || !body.success) {
+            setMessage("The form didn't go through. Email masonjball@gmail.com and include your business name.");
+            setPending(false);
+            return;
+          }
+          track("application_received", { variant: result.tracking.variant }, { eventId: result.tracking.eventId });
+          await confirmLandingReceipt({
+            eventId: result.tracking.eventId,
+            qualified: result.tracking.qualified,
+            variant: result.tracking.variant,
+            eventSourceUrl: window.location.href.split("#")[0],
+          }).catch(() => { /* Delivery succeeded; an optional receipt must not request a resubmission. */ });
+          router.push("/lp/thank-you");
+        } catch {
+          setMessage("The form didn't go through. Email masonjball@gmail.com and include your business name.");
+        }
+        setPending(false);
+        return;
+      }
+
+      setPending(false);
+      setMessage(result.message);
+      if (result.status === "invalid") {
+        setErrors(result.fieldErrors);
+        const first = Object.keys(result.fieldErrors)[0] as keyof LandingErrors | undefined;
+        if (first) setStep(landingStepForField(first));
+      }
+    } catch {
+      setMessage("Unable to send right now. Please try again.");
+    } finally {
+      submitting.current = false;
+      setPending(false);
     }
   }
 

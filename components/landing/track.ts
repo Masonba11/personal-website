@@ -32,15 +32,18 @@ export function track(name: string, params: Params = {}, options?: { once?: bool
   if (name === "application_received" && received.has(eventId)) return eventId;
   if (options?.once) onceKeys.add(onceKey);
   if (name === "application_received") received.add(eventId);
-  const detail = { event: name, event_id: eventId, ...params };
-  window.dispatchEvent(new CustomEvent("mball:track", { detail }));
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(detail);
-  if (typeof window.fbq === "function") {
-    if (name === "application_received") window.fbq("track", "Lead", { content_name: params.variant }, { eventID: eventId });
-    else window.fbq("trackCustom", name === "application_started" ? "ApplicationStarted" : name, params, { eventID: eventId });
-  }
-  window.gtag?.("event", name, { ...params, event_id: eventId });
+  try {
+    bootAnalytics();
+    const detail = { event: name, event_id: eventId, ...params };
+    window.dispatchEvent(new CustomEvent("mball:track", { detail }));
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(detail);
+    if (typeof window.fbq === "function") {
+      if (name === "application_received") window.fbq("track", "Lead", { content_name: params.variant }, { eventID: eventId });
+      else window.fbq("trackCustom", name === "application_started" ? "ApplicationStarted" : name, params, { eventID: eventId });
+    }
+    window.gtag?.("event", name, { ...params, event_id: eventId });
+  } catch { /* Optional measurement must never turn successful delivery into an error. */ }
   return eventId;
 }
 function script(src: string, id: string) {

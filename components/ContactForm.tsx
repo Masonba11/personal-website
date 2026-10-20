@@ -19,6 +19,7 @@ import {
   type FieldErrors,
 } from "@/lib/contact";
 import { site } from "@/lib/site";
+import { track } from "@/components/landing/track";
 import { web3formsAccessKey } from "@/lib/web3forms";
 
 const initialInput: ContactInput = {
@@ -55,6 +56,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<ContactState>(idle);
   const [pending, setPending] = useState(false);
   const startedRef = useRef(0);
+  const submitting = useRef(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const skipInitialFocus = useRef(true);
   const baseId = useId();
@@ -88,6 +90,7 @@ export function ContactForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting.current) return;
     if (step < formSteps.length - 1) {
       goNext();
       return;
@@ -107,51 +110,62 @@ export function ContactForm() {
       data.set(key, input[key]);
     });
     data.set("startedAt", String(startedRef.current || Date.now() - 2000));
+    submitting.current = true;
     setPending(true);
-    const result = await submitContact(data);
-    if (result.status === "ready" && result.delivery) {
-      try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            access_key: web3formsAccessKey,
-            subject: result.delivery.subject,
-            from_name: result.delivery.name,
-            name: result.delivery.name,
-            email: result.delivery.email,
-            phone: result.delivery.phone,
-            message: result.delivery.message,
-            botcheck: "",
-          }),
-        });
-        const body = (await response.json()) as { success?: boolean };
-        setStatus(
-          response.ok && body.success
-            ? { status: "success", message: thankYouMessage, fieldErrors: {} }
-            : {
-                status: "error",
-                message:
-                  "The form didn't go through. Email me directly and include your business name.",
-                fieldErrors: {},
-              },
-        );
-      } catch {
-        setStatus({
-          status: "error",
-          message: "The form didn't go through. Email me directly and include your business name.",
-          fieldErrors: {},
-        });
+    try {
+      const result = await submitContact(data);
+      if (result.status === "ready" && result.delivery) {
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+              access_key: web3formsAccessKey,
+              subject: result.delivery.subject,
+              from_name: result.delivery.name,
+              name: result.delivery.name,
+              email: result.delivery.email,
+              phone: result.delivery.phone,
+              message: result.delivery.message,
+              botcheck: "",
+            }),
+          });
+          const body = (await response.json()) as { success?: boolean };
+          if (response.ok && body.success) {
+            track("application_received", { variant: "contact" });
+          }
+          setStatus(
+            response.ok && body.success
+              ? { status: "success", message: thankYouMessage, fieldErrors: {} }
+              : {
+                  status: "error",
+                  message:
+                    "The form didn't go through. Email me directly and include your business name.",
+                  fieldErrors: {},
+                },
+          );
+        } catch {
+          setStatus({
+            status: "error",
+            message: "The form didn't go through. Email me directly and include your business name.",
+            fieldErrors: {},
+          });
+        }
+        setPending(false);
+        return;
       }
       setPending(false);
-      return;
-    }
-    setPending(false);
-    setStatus(result);
-    if (result.status === "invalid") {
-      setErrors(result.fieldErrors);
-      const first = Object.keys(result.fieldErrors)[0] as keyof FieldErrors | undefined;
-      if (first) setStep(stepForField(first));
+      setStatus(result);
+      if (result.status === "invalid") {
+        setErrors(result.fieldErrors);
+        const first = Object.keys(result.fieldErrors)[0] as keyof FieldErrors | undefined;
+        if (first) setStep(stepForField(first));
+      }
+    } catch {
+      setStatus({ status: "error", message: "Unable to send right now. Please try again.", fieldErrors: {} });
+    } finally {
+      submitting.current = false;
+      setPending(false);
     }
   }
 
