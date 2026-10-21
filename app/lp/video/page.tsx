@@ -54,7 +54,7 @@ export default function VideoLandingPage() {
         headline="Don't just take our word for it. Watch the actual ads we've run for home service businesses."
         lede="From window cleaning to solar screens and general contracting, these are real advertisements built to attract homeowners and generate new business opportunities."
       />
-      <section id="story" className="scroll-mt-28 mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
+      <section id="story" className="cv-auto scroll-mt-28 mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
         <h2 className="font-serif text-3xl md:text-4xl">How I Generated Hundreds of Leads for My Own Businesses</h2>
         <p className="mt-3 max-w-2xl text-body">
           I&apos;ll show you the campaigns, challenges, and strategies behind the businesses I&apos;ve built and the contractors I&apos;ve worked with.
@@ -63,7 +63,7 @@ export default function VideoLandingPage() {
           <VideoSlot video={storyVideo} variant="video" />
         </div>
       </section>
-      <section className="mx-auto w-full max-w-6xl px-5 pb-14 md:px-8">
+      <section className="cv-auto mx-auto w-full max-w-6xl px-5 pb-14 md:px-8">
         <h2 className="font-serif text-3xl">Results from the campaigns</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-body">
           These are lead-form inquiries from the named campaigns, not booked jobs. Full definitions and date ranges are on each case study.
@@ -83,7 +83,7 @@ export default function VideoLandingPage() {
         </QualifierLink>
       </section>
       <Pricing />
-      <section className="mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
+      <section className="cv-auto mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
         <LandingForm variant="video" />
       </section>
       <StickyApply variant="video" />

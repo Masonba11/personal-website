@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { Shot } from "@/lib/case-studies";
 
 export function ProofScreenshot({ shot }: { shot: Shot }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
+  const [enlarged, setEnlarged] = useState(false);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -20,11 +21,14 @@ export function ProofScreenshot({ shot }: { shot: Shot }) {
   }, []);
 
   return (
-    <figure className="border border-ink/10 bg-white">
+    <figure className="cv-auto border border-ink/10 bg-white">
       <button
         type="button"
         className="block w-full cursor-zoom-in text-left"
-        onClick={() => dialogRef.current?.showModal()}
+        onClick={() => {
+          setEnlarged(true);
+          dialogRef.current?.showModal();
+        }}
         aria-haspopup="dialog"
         aria-label={`Enlarge screenshot: ${shot.caption}`}
       >
@@ -33,7 +37,8 @@ export function ProofScreenshot({ shot }: { shot: Shot }) {
             src={shot.src}
             alt={shot.alt}
             fill
-            sizes="(max-width: 768px) 100vw, 900px"
+            sizes="(max-width: 768px) 100vw, 720px"
+            quality={60}
             className="object-contain"
           />
         </span>
@@ -62,9 +67,11 @@ export function ProofScreenshot({ shot }: { shot: Shot }) {
             Close
           </button>
         </div>
-        <div className="relative mt-4" style={{ aspectRatio: `${shot.width} / ${shot.height}` }}>
-          <Image src={shot.src} alt={shot.alt} fill sizes="100vw" className="object-contain" />
-        </div>
+        {enlarged ? (
+          <div className="relative mt-4" style={{ aspectRatio: `${shot.width} / ${shot.height}` }}>
+            <Image src={shot.src} alt={shot.alt} fill sizes="100vw" className="object-contain" />
+          </div>
+        ) : null}
       </dialog>
     </figure>
   );

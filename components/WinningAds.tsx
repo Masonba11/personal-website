@@ -88,7 +88,7 @@ export function WinningAdsShowcase({
           <div
             ref={scroller}
             onScroll={syncIndex}
-            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 motion-reduce:scroll-auto md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3"
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3"
           >
             {ads.map((ad) => (
               <WinningAdCard key={ad.id} ad={ad} compact={compact} />
@@ -234,7 +234,7 @@ function WinningAdVideo({ ad }: { ad: WinningAd }) {
         {ad.posterSrc ? (
           // Poster only. The video file stays unloaded until play.
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={ad.posterSrc} alt="" width={ad.width} height={ad.height} className="h-full w-full object-contain" />
+          <img src={ad.posterSrc} alt="" width={ad.width} height={ad.height} loading="lazy" decoding="async" fetchPriority="low" className="h-full w-full object-contain" />
         ) : null}
         <span className="absolute inset-0 flex items-center justify-center">
           <span className="rounded-full bg-gold px-4 py-2 text-sm font-medium text-ink">Play ad</span>

@@ -5,8 +5,23 @@ import { bootAnalytics, track } from "@/components/landing/track";
 
 export function LandingBoot({ variant }: { variant: string }) {
   useEffect(() => {
-    bootAnalytics();
-    track("landing_page_view", { variant }, { once: true });
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    let ran = false;
+    const start = () => {
+      if (ran) return;
+      ran = true;
+      bootAnalytics();
+      track("landing_page_view", { variant }, { once: true });
+    };
+    const idle = window.requestIdleCallback?.(start, { timeout: 1800 });
+    const timer = window.setTimeout(start, 1200);
+    return () => {
+      root.style.scrollBehavior = previous;
+      if (idle !== undefined) window.cancelIdleCallback?.(idle);
+      window.clearTimeout(timer);
+    };
   }, [variant]);
   return null;
 }

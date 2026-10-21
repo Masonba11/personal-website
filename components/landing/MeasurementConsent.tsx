@@ -9,7 +9,13 @@ export function MeasurementConsent() {
     return () => { window.removeEventListener("mball:consent", cb); window.removeEventListener("storage", cb); };
   }, () => { try { return localStorage.getItem("mball_measurement_consent") || ""; } catch { return "denied"; } }, () => "denied");
   const pathname = usePathname();
-  useEffect(() => { bootAnalytics(); }, [pathname]);
+  useEffect(() => {
+    if (pathname.startsWith("/lp")) {
+      const timer = window.setTimeout(() => bootAnalytics(), 1200);
+      return () => window.clearTimeout(timer);
+    }
+    bootAnalytics();
+  }, [pathname]);
   function choose(granted: boolean) { setMeasurementConsent(granted); setOpen(false); }
   return <aside aria-label="Advertising measurement preferences" className="border-t border-ink/15 bg-paper p-5 text-sm">
     <button className="underline" onClick={() => setOpen(!open)}>Advertising measurement preferences</button>

@@ -82,40 +82,15 @@ dialog.shot-dialog::backdrop {
     radial-gradient(ellipse at center, rgba(214, 173, 96, 0.42) 0%, rgba(214, 173, 96, 0.12) 42%, transparent 72%);
   box-shadow:
     0 0 0 1px rgba(246, 226, 176, 0.45),
-    0 0 48px rgba(214, 173, 96, 0.45),
-    inset 0 0 48px rgba(214, 173, 96, 0.18);
+    0 0 32px rgba(214, 173, 96, 0.35);
   text-shadow:
-    0 0 6px #fff,
-    0 0 16px #f6e2b0,
-    0 0 34px #d6ad60,
-    0 0 70px rgba(214, 173, 96, 0.95);
-  animation: revenue-glow 2.2s ease-in-out infinite;
+    0 0 8px #f6e2b0,
+    0 0 22px rgba(214, 173, 96, 0.85);
 }
 
-@keyframes revenue-glow {
-  0%,
-  100% {
-    text-shadow:
-      0 0 6px #fff,
-      0 0 14px #f6e2b0,
-      0 0 28px #d6ad60,
-      0 0 56px rgba(214, 173, 96, 0.7);
-    box-shadow:
-      0 0 0 1px rgba(246, 226, 176, 0.35),
-      0 0 32px rgba(214, 173, 96, 0.32),
-      inset 0 0 36px rgba(214, 173, 96, 0.12);
-  }
-  50% {
-    text-shadow:
-      0 0 10px #fff,
-      0 0 24px #fff1c9,
-      0 0 48px #e4c27a,
-      0 0 90px rgba(214, 173, 96, 1);
-    box-shadow:
-      0 0 0 1px rgba(255, 244, 214, 0.7),
-      0 0 72px rgba(214, 173, 96, 0.7),
-      inset 0 0 60px rgba(214, 173, 96, 0.28);
-  }
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
 }
 
 @media (prefers-reduced-motion: reduce) {

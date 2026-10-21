@@ -56,7 +56,7 @@ export default function ResultsLandingPage() {
         headline="Don't just take our word for it. Watch the actual ads we've run for home service businesses."
         lede="From window cleaning to solar screens and general contracting, these are real advertisements built to attract homeowners and generate new business opportunities."
       />
-      <section className="mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
+      <section className="cv-auto mx-auto w-full max-w-6xl px-5 py-14 md:px-8">
         <h2 className="font-serif text-3xl md:text-4xl">Campaign results</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-body">
           Counts below are lead-form inquiries from the named ad accounts for the stated periods. They are not booked jobs or collected revenue.
@@ -77,7 +77,7 @@ export default function ResultsLandingPage() {
           Ball Bros Screens exact export: {ballBros.period}, {ballBros.customerLeads} customer lead-form inquiries, {usd(ballBros.customerSpend)} spent. Arizona Window Washing Pros after the pivot: {azwwp.after.period}. Sublime Design &amp; Build: {sublime.period}, {usd(sublime.spend)} spent.
         </p>
       </section>
-      <section className="bg-white py-14">
+      <section className="cv-auto bg-white py-14">
         <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
           <h2 className="font-serif text-3xl">Before and after the market change</h2>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-body">
@@ -108,10 +108,10 @@ export default function ResultsLandingPage() {
         </QualifierLink>
       </section>
       <Pricing />
-      <section className="mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
+      <section className="cv-auto mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
         <LandingForm variant="results" />
       </section>
-      <section className="mx-auto grid w-full max-w-6xl gap-6 px-5 py-14 md:px-8">
+      <section className="cv-auto mx-auto grid w-full max-w-6xl gap-6 px-5 py-14 md:px-8">
         <h2 className="font-serif text-3xl">The ad account screenshots</h2>
         <p className="max-w-2xl text-sm leading-relaxed text-body">
           Tap a screenshot to view the full report.
@@ -122,7 +122,7 @@ export default function ResultsLandingPage() {
         {yard ? <ProofScreenshot shot={yard} /> : null}
         {mountains ? <ProofScreenshot shot={mountains} /> : null}
       </section>
-      <section className="bg-charcoal text-paper">
+      <section className="cv-auto bg-charcoal text-paper">
         <div className="mx-auto grid w-full max-w-6xl items-stretch gap-8 px-5 py-14 md:grid-cols-[0.8fr_1.2fr] md:px-8">
           <FounderPortrait />
           <div>

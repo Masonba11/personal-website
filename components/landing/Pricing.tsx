@@ -6,7 +6,7 @@ export function Pricing() {
   ];
 
   return (
-    <section className="bg-ink py-16 text-paper md:py-20" aria-labelledby="pricing-title">
+    <section className="cv-auto bg-ink py-16 text-paper md:py-20" aria-labelledby="pricing-title">
       <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
         <h2 id="pricing-title" className="font-serif text-4xl md:text-5xl">Simple Pricing. Clear Expectations.</h2>
         <ol className="mt-10 grid gap-6 md:grid-cols-3">
