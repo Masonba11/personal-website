@@ -83,7 +83,7 @@ export default function VideoLandingPage() {
         </QualifierLink>
       </section>
       <Pricing />
-      <section className="cv-auto mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
+      <section className="mx-auto w-full max-w-3xl px-5 py-16 md:px-8">
         <LandingForm variant="video" />
       </section>
       <StickyApply variant="video" />
