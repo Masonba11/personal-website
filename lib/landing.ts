@@ -200,13 +200,17 @@ export function landingStepForField(field: keyof LandingInput) {
   return 3;
 }
 
-export function qualifyLanding(input: LandingInput): FitLevel {
-  const budget = budgetScore[input.adBudget] ?? 0;
-  const project = projectScore[input.projectValue] ?? 0;
-  const response = responseScore[input.responseTime] ?? 0;
+export function applicationFit(adBudget: string, projectValue: string, responseTime: string): FitLevel {
+  const budget = budgetScore[adBudget] ?? 0;
+  const project = projectScore[projectValue] ?? 0;
+  const response = responseScore[responseTime] ?? 0;
   if (budget >= 2 && project >= 2 && response >= 2) return "High Priority";
   if (budget >= 1 && project >= 1) return "Potential Fit";
   return "Needs Review";
+}
+
+export function qualifyLanding(input: LandingInput): FitLevel {
+  return applicationFit(input.adBudget, input.projectValue, input.responseTime);
 }
 
 export function isLandingSpam(input: LandingInput) {

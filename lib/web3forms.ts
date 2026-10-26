@@ -1,3 +1,2 @@
-/** Web3Forms access keys are public. The free plan rejects server-side requests. */
-export const web3formsAccessKey =
-  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "d67ccb0e-6eb3-4f8a-8689-197a30a28879";
+/** Public Web3Forms key. The free plan only accepts browser submissions. */
+export const web3formsAccessKey = "3c4a6815-1adb-4c35-b12a-a36f37ea7b2d";
