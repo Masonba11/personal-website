@@ -210,7 +210,7 @@ export function LandingForm({ variant }: { variant: LandingVariant }) {
   }
 
   return (
-    <form id="apply" onSubmit={onSubmit} className="scroll-mt-28 border border-ink/10 bg-white p-5 sm:p-8" noValidate>
+    <form id="apply" onSubmit={onSubmit} className="relative z-40 scroll-mt-28 border border-ink/10 bg-white p-5 sm:p-8" noValidate>
       <p className="text-xs uppercase tracking-[0.18em] text-gold-deep">Step {step + 1} of {landingSteps.length}</p>
       <ol className="mt-3 grid grid-cols-4 gap-2" aria-label="Application progress">
         {landingSteps.map((label, index) => (

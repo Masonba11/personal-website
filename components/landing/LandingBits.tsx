@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { bootAnalytics, track } from "@/components/landing/track";
 
 export function LandingBoot({ variant }: { variant: string }) {
@@ -40,19 +40,20 @@ export function QualifierLink({ children, className, variant }: { children: Reac
 }
 
 export function StickyApply({ variant }: { variant: string }) {
+  const [show, setShow] = useState(false);
+
   useEffect(() => {
-    const bar = document.getElementById("sticky-apply");
     const form = document.getElementById("apply");
-    if (!bar || !form) return;
+    if (!form) return;
     const observer = new IntersectionObserver(([entry]) => {
-      bar.hidden = entry.isIntersecting;
-    }, { threshold: 0.15 });
+      setShow(!entry.isIntersecting);
+    }, { rootMargin: "0px 0px -72px 0px", threshold: 0 });
     observer.observe(form);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div id="sticky-apply" className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-ink/95 p-3 md:hidden">
+    <div id="sticky-apply" hidden={!show} className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-ink/95 p-3 md:hidden">
       <QualifierLink variant={variant} className="block bg-gold py-3 text-center text-sm font-medium text-ink">
         See If Your Business Qualifies
       </QualifierLink>

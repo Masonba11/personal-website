@@ -21,7 +21,7 @@ export function ProofScreenshot({ shot }: { shot: Shot }) {
   }, []);
 
   return (
-    <figure className="cv-auto border border-ink/10 bg-white">
+    <figure className="border border-ink/10 bg-white">
       <button
         type="button"
         className="block w-full cursor-zoom-in text-left"

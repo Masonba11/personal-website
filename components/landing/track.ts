@@ -22,8 +22,16 @@ export function setMeasurementConsent(granted: boolean) {
   else { window.fbq?.("consent", "revoke"); }
 }
 
+function createEventId() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return `${Date.now().toString(16)}-${Math.random().toString(16).slice(2)}`;
+  }
+}
+
 export function track(name: string, params: Params = {}, options?: { once?: boolean; eventId?: string }) {
-  const eventId = options?.eventId ?? crypto.randomUUID();
+  const eventId = options?.eventId ?? createEventId();
   // Form answers are preliminary screening, not verified CRM outcomes.
   if (name === "qualified_application") return eventId;
   if (!hasMeasurementConsent()) return eventId;
