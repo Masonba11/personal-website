@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Outfit, Yellowtail } from "next/font/google";
+import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
@@ -110,6 +111,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div id="main">{children}</div>
         <Footer />
         <MeasurementConsent />
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          strategy="lazyOnload"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6aea37a23cd9c89e7fc9eb14"
+          data-source="WEB_USER"
+        />
         <noscript>
           {/* Meta requires this raw image when JavaScript is unavailable. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
